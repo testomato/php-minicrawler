@@ -99,17 +99,18 @@ PHP_FUNCTION(mcrawler_go)
 
 	HashTable *arr_hash = Z_ARRVAL_P(zurls);
 	HashPosition pointer;
-	mcrawler_url *urls[zend_hash_num_elements(arr_hash)];
+	mcrawler_url *urls[zend_hash_num_elements(arr_hash) + 1];
 	int i = 0;
 
 	for(zend_hash_internal_pointer_reset_ex(arr_hash, &pointer); zend_hash_get_current_data_ex(arr_hash, (void**) &zurl, &pointer) == SUCCESS; zend_hash_move_forward_ex(arr_hash, &pointer)) {
 		ZEND_FETCH_RESOURCE(urls[i], mcrawler_url*, zurl, -1, PHP_MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 		i++;
 	}
+	urls[i] = NULL;
 
 	ZEND_FETCH_RESOURCE(settings, mcrawler_settings*, &zsettings, -1, PHP_MCRAWLER_SETTINGS_RES_NAME, le_mcrawler_settings);
 
-	mcrawler_go(urls, i, settings, callback);
+	mcrawler_go(urls, settings, callback);
 
 	RETURN_TRUE;
 }

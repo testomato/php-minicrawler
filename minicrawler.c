@@ -159,7 +159,7 @@ PHP_FUNCTION(mcrawler_get_timing)
 		ALLOC_INIT_ZVAL(timingArray);
 		array_init(timingArray);
 		add_assoc_string(timingArray, "metric", "DNS Lookup", 1);
-		add_assoc_long(timingArray, "value", timing->dnsend - timing->dnsstart);
+		add_assoc_long(timingArray, "value", (timing->dnsend ? timing->dnsend : timing->done) - timing->dnsstart);
 		add_next_index_zval(return_value, timingArray);
 	}
 
@@ -167,7 +167,7 @@ PHP_FUNCTION(mcrawler_get_timing)
 		ALLOC_INIT_ZVAL(timingArray);
 		array_init(timingArray);
 		add_assoc_string(timingArray, "metric", "Initial connection", 1);
-		add_assoc_long(timingArray, "value", timing->requeststart - timing->connectionstart);
+		add_assoc_long(timingArray, "value", (timing->requeststart ? timing->requeststart : timing->done) - timing->connectionstart);
 		add_next_index_zval(return_value, timingArray);
 	}
 
@@ -175,7 +175,7 @@ PHP_FUNCTION(mcrawler_get_timing)
 		ALLOC_INIT_ZVAL(timingArray);
 		array_init(timingArray);
 		add_assoc_string(timingArray, "metric", "SSL", 1);
-		add_assoc_long(timingArray, "value", timing->sslend - timing->sslstart);
+		add_assoc_long(timingArray, "value", (timing->sslend ? timing->sslend : timing->done) - timing->sslstart);
 		add_next_index_zval(return_value, timingArray);
 	}
 
@@ -183,7 +183,7 @@ PHP_FUNCTION(mcrawler_get_timing)
 		ALLOC_INIT_ZVAL(timingArray);
 		array_init(timingArray);
 		add_assoc_string(timingArray, "metric", "Request", 1);
-		add_assoc_long(timingArray, "value", timing->requestend - timing->requeststart);
+		add_assoc_long(timingArray, "value", (timing->requestend ? timing->requestend : timing->done) - timing->requeststart);
 		add_next_index_zval(return_value, timingArray);
 	}
 
@@ -191,7 +191,7 @@ PHP_FUNCTION(mcrawler_get_timing)
 		ALLOC_INIT_ZVAL(timingArray);
 		array_init(timingArray);
 		add_assoc_string(timingArray, "metric", "Waiting", 1);
-		add_assoc_long(timingArray, "value", timing->firstbyte - timing->requestend);
+		add_assoc_long(timingArray, "value", (timing->firstbyte ? timing->firstbyte : timing->done) - timing->requestend);
 		add_next_index_zval(return_value, timingArray);
 	}
 
@@ -199,7 +199,7 @@ PHP_FUNCTION(mcrawler_get_timing)
 		ALLOC_INIT_ZVAL(timingArray);
 		array_init(timingArray);
 		add_assoc_string(timingArray, "metric", "Content download", 1);
-		add_assoc_long(timingArray, "value", timing->lastread - timing->firstbyte);
+		add_assoc_long(timingArray, "value", (timing->lastread ? timing->lastread : timing->done) - timing->firstbyte);
 		add_next_index_zval(return_value, timingArray);
 	}
 
@@ -207,7 +207,7 @@ PHP_FUNCTION(mcrawler_get_timing)
 		ALLOC_INIT_ZVAL(timingArray);
 		array_init(timingArray);
 		add_assoc_string(timingArray, "metric", "Total", 1);
-		add_assoc_long(timingArray, "value", timing->lastread - timing->connectionstart);
+		add_assoc_long(timingArray, "value", (timing->lastread ? timing->lastread : timing->done) - timing->connectionstart);
 		add_next_index_zval(return_value, timingArray);
 	}
 }

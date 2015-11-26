@@ -86,7 +86,7 @@ PHP_FUNCTION(mcrawler_init_settings)
 	ZEND_REGISTER_RESOURCE(return_value, settings, le_mcrawler_settings);
 }
 
-static void callback(mcrawler_url* url) {}
+static void callback(mcrawler_url* url, void *arg) {}
 
 PHP_FUNCTION(mcrawler_go)
 {
@@ -110,7 +110,7 @@ PHP_FUNCTION(mcrawler_go)
 
 	ZEND_FETCH_RESOURCE(settings, mcrawler_settings*, &zsettings, -1, PHP_MCRAWLER_SETTINGS_RES_NAME, le_mcrawler_settings);
 
-	mcrawler_go(urls, settings, callback);
+	mcrawler_go(urls, settings, callback, NULL);
 
 	RETURN_TRUE;
 }

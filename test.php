@@ -1,4 +1,6 @@
 <?php
+echo "version: " . mcrawler_version() . "\n";
+
 $url = mcrawler_init_url("http://testomato.com");
 
 //test default params

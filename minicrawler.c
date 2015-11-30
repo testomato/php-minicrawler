@@ -16,6 +16,7 @@ static zend_function_entry minicrawler_functions[] = {
     PHP_FE(mcrawler_get_status, NULL)
     PHP_FE(mcrawler_get_url, NULL)
     PHP_FE(mcrawler_get_timing, NULL)
+    PHP_FE(mcrawler_version, NULL)
     PHP_FE_END
 };
 
@@ -242,4 +243,9 @@ PHP_FUNCTION(mcrawler_get_timing)
 		add_assoc_long(timingArray, "value", (timing->lastread ? timing->lastread : timing->done) - timing->connectionstart);
 		add_next_index_zval(return_value, timingArray);
 	}
+}
+
+PHP_FUNCTION(mcrawler_version)
+{
+	RETURN_STRING(mcrawler_version(), 1);
 }

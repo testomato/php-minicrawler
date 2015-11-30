@@ -19,6 +19,7 @@ PHP_FUNCTION(mcrawler_go);
 PHP_FUNCTION(mcrawler_get_status);
 PHP_FUNCTION(mcrawler_get_url);
 PHP_FUNCTION(mcrawler_get_timing);
+PHP_FUNCTION(mcrawler_version);
 
 extern zend_module_entry minicrawler_module_entry;
 #define phpext_minicrawler_ptr &minicrawler_module_entry

@@ -92,10 +92,16 @@ PHP_FUNCTION(mcrawler_close_url)
 PHP_FUNCTION(mcrawler_init_settings)
 {
 	mcrawler_settings *settings;
+	long timeout = 5, delay = 100;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|ll", &timeout, &delay) == FAILURE) {
+		RETURN_FALSE;
+	}
 
 	settings = emalloc(sizeof(mcrawler_settings));
-	memset(settings, 0, sizeof(settings));
 	mcrawler_init_settings(settings);
+	settings->timeout = timeout;
+	settings->delay = delay;
 
 	ZEND_REGISTER_RESOURCE(return_value, settings, le_mcrawler_settings);
 }

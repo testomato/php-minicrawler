@@ -21,11 +21,11 @@ zend_module_entry minicrawler_module_entry = {
     STANDARD_MODULE_HEADER,
     MINICRAWLER_WORLD_EXTNAME,
     minicrawler_functions,
+    PHP_MINIT(minicrawler),
+    NULL,//PHP_MSHUTDOWN(minicrawler)
     NULL,
     NULL,
-    NULL,
-    NULL,
-    NULL,
+    NULL,//PHP_MINFO(minicrawler)
     PHP_MINICRAWLER_VERSION,
     STANDARD_MODULE_PROPERTIES
 };
@@ -53,8 +53,8 @@ static void mcrawler_settings_dtor(zend_rsrc_list_entry *rsrc TSRMLS_DC)
 
 PHP_MINIT_FUNCTION(minicrawler)
 {
-	le_mcrawler_url = zend_register_list_destructors_ex(mcrawler_url_dtor, NULL, PHP_MCRAWLER_URL_RES_NAME, module_number);
-	le_mcrawler_settings = zend_register_list_destructors_ex(mcrawler_settings_dtor, NULL, PHP_MCRAWLER_SETTINGS_RES_NAME, module_number);
+	le_mcrawler_url = zend_register_list_destructors_ex(mcrawler_url_dtor, NULL, MCRAWLER_URL_RES_NAME, module_number);
+	le_mcrawler_settings = zend_register_list_destructors_ex(mcrawler_settings_dtor, NULL, MCRAWLER_SETTINGS_RES_NAME, module_number);
 }
 
 PHP_FUNCTION(mcrawler_init_url)
@@ -103,12 +103,12 @@ PHP_FUNCTION(mcrawler_go)
 	int i = 0;
 
 	for(zend_hash_internal_pointer_reset_ex(arr_hash, &pointer); zend_hash_get_current_data_ex(arr_hash, (void**) &zurl, &pointer) == SUCCESS; zend_hash_move_forward_ex(arr_hash, &pointer)) {
-		ZEND_FETCH_RESOURCE(urls[i], mcrawler_url*, zurl, -1, PHP_MCRAWLER_URL_RES_NAME, le_mcrawler_url);
+		ZEND_FETCH_RESOURCE(urls[i], mcrawler_url*, zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 		i++;
 	}
 	urls[i] = NULL;
 
-	ZEND_FETCH_RESOURCE(settings, mcrawler_settings*, &zsettings, -1, PHP_MCRAWLER_SETTINGS_RES_NAME, le_mcrawler_settings);
+	ZEND_FETCH_RESOURCE(settings, mcrawler_settings*, &zsettings, -1, MCRAWLER_SETTINGS_RES_NAME, le_mcrawler_settings);
 
 	mcrawler_go(urls, settings, callback, NULL);
 
@@ -123,7 +123,7 @@ PHP_FUNCTION(mcrawler_get_status)
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
 		RETURN_FALSE;
 	}
-	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, PHP_MCRAWLER_URL_RES_NAME, le_mcrawler_url);
+	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 
 	RETURN_LONG(url->status);
 }
@@ -136,7 +136,7 @@ PHP_FUNCTION(mcrawler_get_url)
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
 		RETURN_FALSE;
 	}
-	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, PHP_MCRAWLER_URL_RES_NAME, le_mcrawler_url);
+	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 
 	RETURN_STRING(url->rawurl, 1);
 }
@@ -149,7 +149,7 @@ PHP_FUNCTION(mcrawler_get_timing)
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
 		RETURN_FALSE;
 	}
-	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, PHP_MCRAWLER_URL_RES_NAME, le_mcrawler_url);
+	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 
 	array_init(return_value);
 	mcrawler_timing *timing = &url->timing;

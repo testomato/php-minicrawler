@@ -2,6 +2,10 @@
 echo "version: " . mcrawler_version() . "\n";
 
 $url = mcrawler_init_url("http://testomato.com");
+mcrawler_set_useragent($url, 'test');
+mcrawler_set_headers($url, 'X-A: B');
+mcrawler_set_credentials($url, 'user', 'pass');
+mcrawler_set_postdata($url, 'xxx');
 
 //test default params
 $settings = mcrawler_init_settings();

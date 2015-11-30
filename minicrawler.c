@@ -12,6 +12,10 @@ static zend_function_entry minicrawler_functions[] = {
     PHP_FE(mcrawler_init_settings, NULL)
     PHP_FE(mcrawler_close_url, NULL)
     PHP_FE(mcrawler_close_settings, NULL)
+    PHP_FE(mcrawler_set_useragent, NULL)
+    PHP_FE(mcrawler_set_headers, NULL)
+    PHP_FE(mcrawler_set_credentials, NULL)
+    PHP_FE(mcrawler_set_postdata, NULL)
     PHP_FE(mcrawler_go, NULL)
     PHP_FE(mcrawler_get_status, NULL)
     PHP_FE(mcrawler_get_url, NULL)
@@ -120,6 +124,73 @@ PHP_FUNCTION(mcrawler_close_settings)
 	}
 
 	zend_list_delete(Z_LVAL_P(zsetting));
+	RETURN_TRUE;
+}
+
+PHP_FUNCTION(mcrawler_set_useragent)
+{
+	mcrawler_url *url;
+	zval *zurl;
+	char *useragent;
+	int useragent_len;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rs", &zurl, &useragent, &useragent_len) == FAILURE) {
+		RETURN_FALSE;
+	}
+	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
+
+	strncpy(url->customagent, useragent, sizeof(url->customagent) - 1);
+	RETURN_TRUE;
+}
+
+PHP_FUNCTION(mcrawler_set_headers)
+{
+	mcrawler_url *url;
+	zval *zurl;
+	char *headers;
+	int headers_len;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rs", &zurl, &headers, &headers_len) == FAILURE) {
+		RETURN_FALSE;
+	}
+	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
+
+	strncpy(url->customheader, headers, sizeof(url->customheader) - 1);
+	RETURN_TRUE;
+}
+
+PHP_FUNCTION(mcrawler_set_credentials)
+{
+	mcrawler_url *url;
+	zval *zurl;
+	char *username, *password;
+	int username_len, password_len;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rss", &zurl, &username, &username_len, &password, &password_len) == FAILURE) {
+		RETURN_FALSE;
+	}
+	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
+
+	strncpy(url->username, username, sizeof(url->username) - 1);
+	strncpy(url->password, password, sizeof(url->password) - 1);
+	RETURN_TRUE;
+}
+
+PHP_FUNCTION(mcrawler_set_postdata)
+{
+	mcrawler_url *url;
+	zval *zurl;
+	char *postdata;
+	int postdata_len;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rs", &zurl, &postdata, &postdata_len) == FAILURE) {
+		RETURN_FALSE;
+	}
+	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
+
+	url->post = malloc(postdata_len);
+	url->postlen = postdata_len;
+	memcpy(url->post, postdata, postdata_len);
 	RETURN_TRUE;
 }
 

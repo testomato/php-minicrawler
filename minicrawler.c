@@ -63,17 +63,21 @@ PHP_MINIT_FUNCTION(minicrawler)
 PHP_FUNCTION(mcrawler_init_url)
 {
     mcrawler_url *url;
-	char *url_s;
-	int url_len;
+	char *url_s, *method_s = NULL;
+	int url_len, method_len = 0;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &url_s, &url_len) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|s", &url_s, &url_len, &method_s, &method_len) == FAILURE) {
 		RETURN_FALSE;
 	}
 
 	url = emalloc(sizeof(mcrawler_url));
 	memset(url, 0, sizeof(mcrawler_url));
 	mcrawler_init_url(url, url_s);
-	strcpy(url->method, "GET");
+	if (method_s) {
+		strncpy(url->method, method_s, sizeof(url->method) - 1);
+	} else {
+		strcpy(url->method, "GET");
+	}
 
 	ZEND_REGISTER_RESOURCE(return_value, url, le_mcrawler_url);
 }

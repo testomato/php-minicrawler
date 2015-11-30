@@ -10,11 +10,13 @@ int le_mcrawler_settings;
 static zend_function_entry minicrawler_functions[] = {
     PHP_FE(mcrawler_init_url, NULL)
     PHP_FE(mcrawler_init_settings, NULL)
+    PHP_FE(mcrawler_close_url, NULL)
+    PHP_FE(mcrawler_close_settings, NULL)
     PHP_FE(mcrawler_go, NULL)
     PHP_FE(mcrawler_get_status, NULL)
     PHP_FE(mcrawler_get_url, NULL)
     PHP_FE(mcrawler_get_timing, NULL)
-    {NULL, NULL, NULL}
+    PHP_FE_END
 };
 
 zend_module_entry minicrawler_module_entry = {
@@ -75,6 +77,18 @@ PHP_FUNCTION(mcrawler_init_url)
 	ZEND_REGISTER_RESOURCE(return_value, url, le_mcrawler_url);
 }
 
+PHP_FUNCTION(mcrawler_close_url)
+{
+	zval *zurl;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+		RETURN_FALSE;
+	}
+
+	zend_list_delete(Z_LVAL_P(zurl));
+	RETURN_TRUE;
+}
+
 PHP_FUNCTION(mcrawler_init_settings)
 {
 	mcrawler_settings *settings;
@@ -84,6 +98,18 @@ PHP_FUNCTION(mcrawler_init_settings)
 	mcrawler_init_settings(settings);
 
 	ZEND_REGISTER_RESOURCE(return_value, settings, le_mcrawler_settings);
+}
+
+PHP_FUNCTION(mcrawler_close_settings)
+{
+	zval *zsetting;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zsetting) == FAILURE) {
+		RETURN_FALSE;
+	}
+
+	zend_list_delete(Z_LVAL_P(zsetting));
+	RETURN_TRUE;
 }
 
 static void callback(mcrawler_url* url, void *arg) {}

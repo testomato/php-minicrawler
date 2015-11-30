@@ -13,6 +13,8 @@ PHP_MINIT_FUNCTION(minicrawler);
 
 PHP_FUNCTION(mcrawler_init_url);
 PHP_FUNCTION(mcrawler_init_settings);
+PHP_FUNCTION(mcrawler_close_url);
+PHP_FUNCTION(mcrawler_close_settings);
 PHP_FUNCTION(mcrawler_go);
 PHP_FUNCTION(mcrawler_get_status);
 PHP_FUNCTION(mcrawler_get_url);

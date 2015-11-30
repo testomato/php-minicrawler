@@ -4,3 +4,5 @@ $settings = mcrawler_init_settings();
 mcrawler_go([$url], $settings);
 var_dump(mcrawler_get_status($url));
 var_dump(mcrawler_get_timing($url));
+mcrawler_close_settings($settings);
+mcrawler_close_url($url);

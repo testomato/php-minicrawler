@@ -45,8 +45,9 @@ static void mcrawler_url_dtor(zend_rsrc_list_entry *rsrc TSRMLS_DC)
 {
 	mcrawler_url *url = (mcrawler_url *)rsrc->ptr;
 	if (url) {
-		//TODO, uvolnit vše
+		efree(url->userdata);
 		efree(url);
+		//TODO, uvolnit vše
 	}
 }
 
@@ -67,6 +68,7 @@ PHP_MINIT_FUNCTION(minicrawler)
 PHP_FUNCTION(mcrawler_init_url)
 {
     mcrawler_url *url;
+	php_mcrawler_ctx *ctx;
 	char *url_s, *method_s = NULL;
 	int url_len, method_len = 0;
 
@@ -76,6 +78,9 @@ PHP_FUNCTION(mcrawler_init_url)
 
 	url = emalloc(sizeof(mcrawler_url));
 	memset(url, 0, sizeof(mcrawler_url));
+
+	ctx = (php_mcrawler_ctx *)emalloc(sizeof(php_mcrawler_ctx));
+	url->userdata = ctx;
 	mcrawler_init_url(url, url_s);
 	if (method_s) {
 		strncpy(url->method, method_s, sizeof(url->method) - 1);
@@ -84,6 +89,7 @@ PHP_FUNCTION(mcrawler_init_url)
 	}
 
 	ZEND_REGISTER_RESOURCE(return_value, url, le_mcrawler_url);
+	ctx->id = Z_LVAL_P(return_value);
 }
 
 PHP_FUNCTION(mcrawler_close_url)
@@ -194,14 +200,54 @@ PHP_FUNCTION(mcrawler_set_postdata)
 	RETURN_TRUE;
 }
 
-static void callback(mcrawler_url* url, void *arg) {}
+struct fcall {
+	zend_fcall_info info;
+	zend_fcall_info_cache info_cache;
+};
+
+static void callback(mcrawler_url* url, void *arg) {
+	struct fcall *fc = (struct fcall *)arg;
+	php_mcrawler_ctx *ctx = (php_mcrawler_ctx *)url->userdata;
+	/** php 7
+	zval args[1];
+	zval retval;
+	*/
+	zval *zurl = NULL;
+	zval **args[1];
+	zval *retval = NULL;
+
+	// nejde použí zend_register_resource, protože by dvě různé resource měli stejný pointer
+	MAKE_STD_ZVAL(zurl);
+	ZVAL_RESOURCE(zurl, ctx->id);
+	zend_list_addref(ctx->id);
+	args[0] = &zurl;
+
+	fc->info.no_separation = 0;
+	fc->info.param_count = 1;
+	/** php 7 
+	fc->info.params = args;
+	fc->info.retval = &retval;
+	**/
+	fc->info.params = args;
+	fc->info.retval_ptr_ptr = &retval;
+	if (zend_call_function(&fc->info, &fc->info_cache TSRMLS_CC) == SUCCESS) {
+		if (retval) {
+			zval_ptr_dtor(&retval);
+		}
+	}
+	zval_ptr_dtor(args[0]);
+}
 
 PHP_FUNCTION(mcrawler_go)
 {
 	mcrawler_settings *settings;
 	zval *zurls, *zsettings, **zurl;
+	struct fcall fc;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ar", &zurls, &zsettings) == FAILURE) {
+	fc.info = empty_fcall_info;
+	fc.info_cache = empty_fcall_info_cache;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ar|f", &zurls, &zsettings, &fc.info, &fc.info_cache) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -218,7 +264,7 @@ PHP_FUNCTION(mcrawler_go)
 
 	ZEND_FETCH_RESOURCE(settings, mcrawler_settings*, &zsettings, -1, MCRAWLER_SETTINGS_RES_NAME, le_mcrawler_settings);
 
-	mcrawler_go(urls, settings, callback, NULL);
+	mcrawler_go(urls, settings, callback, (void *)&fc);
 
 	RETURN_TRUE;
 }

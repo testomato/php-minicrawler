@@ -25,6 +25,10 @@ PHP_FUNCTION(mcrawler_get_url);
 PHP_FUNCTION(mcrawler_get_timing);
 PHP_FUNCTION(mcrawler_version);
 
+typedef struct {
+	long id;
+} php_mcrawler_ctx;
+
 extern zend_module_entry minicrawler_module_entry;
 #define phpext_minicrawler_ptr &minicrawler_module_entry
 

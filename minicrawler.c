@@ -80,6 +80,8 @@ PHP_FUNCTION(mcrawler_init_url)
 	memset(url, 0, sizeof(mcrawler_url));
 
 	ctx = (php_mcrawler_ctx *)emalloc(sizeof(php_mcrawler_ctx));
+	TSRMLS_SET_CTX(ctx->thread_ctx);
+
 	url->userdata = ctx;
 	mcrawler_init_url(url, url_s);
 	if (method_s) {
@@ -208,6 +210,8 @@ struct fcall {
 static void callback(mcrawler_url* url, void *arg) {
 	struct fcall *fc = (struct fcall *)arg;
 	php_mcrawler_ctx *ctx = (php_mcrawler_ctx *)url->userdata;
+	TSRMLS_FETCH_FROM_CTX(ctx->thread_ctx);
+
 	/** php 7
 	zval args[1];
 	zval retval;

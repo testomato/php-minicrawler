@@ -27,6 +27,7 @@ PHP_FUNCTION(mcrawler_version);
 
 typedef struct {
 	long id;
+	void ***thread_ctx;
 } php_mcrawler_ctx;
 
 extern zend_module_entry minicrawler_module_entry;

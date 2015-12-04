@@ -258,7 +258,7 @@ PHP_FUNCTION(mcrawler_go)
 
 	for(zend_hash_internal_pointer_reset_ex(arr_hash, &pointer); zend_hash_get_current_data_ex(arr_hash, (void**) &zurl, &pointer) == SUCCESS; zend_hash_move_forward_ex(arr_hash, &pointer)) {
 		ZEND_FETCH_RESOURCE(urls[i], mcrawler_url*, zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
-		i++;
+		urls[i]->index = i++;
 	}
 	urls[i] = NULL;
 

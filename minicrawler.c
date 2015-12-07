@@ -20,6 +20,8 @@ static zend_function_entry minicrawler_functions[] = {
     PHP_FE(mcrawler_get_status, NULL)
     PHP_FE(mcrawler_get_url, NULL)
     PHP_FE(mcrawler_get_timing, NULL)
+    PHP_FE(mcrawler_serialize, NULL)
+    PHP_FE(mcrawler_unserialize, NULL)
     PHP_FE(mcrawler_version, NULL)
     PHP_FE_END
 };
@@ -65,10 +67,20 @@ PHP_MINIT_FUNCTION(minicrawler)
 	le_mcrawler_settings = zend_register_list_destructors_ex(mcrawler_settings_dtor, NULL, MCRAWLER_SETTINGS_RES_NAME, module_number);
 }
 
+static void php_minicrawler_register_url(mcrawler_url *url, zval *zurl TSRMLS_DC) {
+	php_mcrawler_ctx *ctx;
+
+	ctx = (php_mcrawler_ctx *)emalloc(sizeof(php_mcrawler_ctx));
+	TSRMLS_SET_CTX(ctx->thread_ctx);
+	url->userdata = ctx;
+
+	ZEND_REGISTER_RESOURCE(zurl, url, le_mcrawler_url);
+	ctx->id = Z_LVAL_P(zurl);
+}
+
 PHP_FUNCTION(mcrawler_init_url)
 {
     mcrawler_url *url;
-	php_mcrawler_ctx *ctx;
 	char *url_s, *method_s = NULL;
 	int url_len, method_len = 0;
 
@@ -79,10 +91,6 @@ PHP_FUNCTION(mcrawler_init_url)
 	url = emalloc(sizeof(mcrawler_url));
 	memset(url, 0, sizeof(mcrawler_url));
 
-	ctx = (php_mcrawler_ctx *)emalloc(sizeof(php_mcrawler_ctx));
-	TSRMLS_SET_CTX(ctx->thread_ctx);
-
-	url->userdata = ctx;
 	mcrawler_init_url(url, url_s);
 	if (method_s) {
 		strncpy(url->method, method_s, sizeof(url->method) - 1);
@@ -90,8 +98,7 @@ PHP_FUNCTION(mcrawler_init_url)
 		strcpy(url->method, "GET");
 	}
 
-	ZEND_REGISTER_RESOURCE(return_value, url, le_mcrawler_url);
-	ctx->id = Z_LVAL_P(return_value);
+	php_minicrawler_register_url(url, return_value TSRMLS_CC);
 }
 
 PHP_FUNCTION(mcrawler_close_url)
@@ -368,6 +375,73 @@ PHP_FUNCTION(mcrawler_get_timing)
 		add_assoc_long(timingArray, "value", (timing->lastread ? timing->lastread : timing->done) - timing->connectionstart);
 		add_next_index_zval(return_value, timingArray);
 	}
+}
+
+PHP_FUNCTION(mcrawler_serialize)
+{
+	mcrawler_settings *settings;
+	zval *zurls, *zsettings, **zurl;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ar", &zurls, &zsettings) == FAILURE) {
+		RETURN_FALSE;
+	}
+
+	HashTable *arr_hash = Z_ARRVAL_P(zurls);
+	HashPosition pointer;
+	mcrawler_url *urls[zend_hash_num_elements(arr_hash) + 1];
+	int i = 0;
+
+	for(zend_hash_internal_pointer_reset_ex(arr_hash, &pointer); zend_hash_get_current_data_ex(arr_hash, (void**) &zurl, &pointer) == SUCCESS; zend_hash_move_forward_ex(arr_hash, &pointer)) {
+		ZEND_FETCH_RESOURCE(urls[i], mcrawler_url*, zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
+		urls[i]->index = i++;
+	}
+	urls[i] = NULL;
+
+	ZEND_FETCH_RESOURCE(settings, mcrawler_settings*, &zsettings, -1, MCRAWLER_SETTINGS_RES_NAME, le_mcrawler_settings);
+
+	void *buf;
+	int buf_sz;
+
+	mcrawler_urls_serialize(urls, settings, &buf, &buf_sz);
+
+	RETURN_STRINGL(buf, buf_sz, 0);
+}
+
+static void *emalloc_func(size_t size) {
+	return emalloc(size);
+}
+
+PHP_FUNCTION(mcrawler_unserialize)
+{
+	mcrawler_url **urls;
+	mcrawler_settings *settings;
+	char *buf;
+	int buf_sz;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &buf, &buf_sz) == FAILURE) {
+		RETURN_FALSE;
+	}
+
+	mcrawler_urls_unserialize(&urls, &settings, buf, buf_sz, emalloc_func);
+
+	array_init(return_value);
+	zval *zurls, *zurl;
+	zval *zsettings;
+
+	ALLOC_INIT_ZVAL(zurls);
+	array_init(zurls);
+	add_next_index_zval(return_value, zurls);
+
+	MAKE_STD_ZVAL(zsettings);
+	add_next_index_zval(return_value, zsettings);
+
+	for (int i = 0; urls[i]; i++) {
+		MAKE_STD_ZVAL(zurl);
+		add_next_index_zval(zurls, zurl);
+		php_minicrawler_register_url(urls[i], zurl TSRMLS_CC);
+	}
+
+	ZEND_REGISTER_RESOURCE(zsettings, settings, le_mcrawler_settings);
 }
 
 PHP_FUNCTION(mcrawler_version)

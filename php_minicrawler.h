@@ -23,6 +23,8 @@ PHP_FUNCTION(mcrawler_go);
 PHP_FUNCTION(mcrawler_get_status);
 PHP_FUNCTION(mcrawler_get_url);
 PHP_FUNCTION(mcrawler_get_timing);
+PHP_FUNCTION(mcrawler_serialize);
+PHP_FUNCTION(mcrawler_unserialize);
 PHP_FUNCTION(mcrawler_version);
 
 typedef struct {

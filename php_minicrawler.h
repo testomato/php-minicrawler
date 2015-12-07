@@ -6,8 +6,8 @@
 
 #include <minicrawler/minicrawler.h>
 
-#define MCRAWLER_URL_RES_NAME "Minicrawler URL"
-#define MCRAWLER_SETTINGS_RES_NAME "Minicrawler Settings"
+#define MCRAWLER_URL_RES_NAME "minicrawler URL"
+#define MCRAWLER_SETTINGS_RES_NAME "minicrawler settings"
 
 PHP_MINIT_FUNCTION(minicrawler);
 

@@ -203,6 +203,7 @@ PHP_FUNCTION(mcrawler_set_postdata)
 	}
 	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 
+	if (url->post) free(url->post);
 	url->post = malloc(postdata_len);
 	url->postlen = postdata_len;
 	memcpy(url->post, postdata, postdata_len);

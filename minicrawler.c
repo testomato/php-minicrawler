@@ -265,11 +265,18 @@ PHP_FUNCTION(mcrawler_go)
 	HashTable *arr_hash = Z_ARRVAL_P(zurls);
 	HashPosition pointer;
 	mcrawler_url *urls[zend_hash_num_elements(arr_hash) + 1];
-	int i = 0;
+	long ind;
+	char *key;
+	int i = 0, keylen;
 
-	for(zend_hash_internal_pointer_reset_ex(arr_hash, &pointer); zend_hash_get_current_data_ex(arr_hash, (void**) &zurl, &pointer) == SUCCESS; zend_hash_move_forward_ex(arr_hash, &pointer)) {
+	for(zend_hash_internal_pointer_reset_ex(arr_hash, &pointer); zend_hash_get_current_data_ex(arr_hash, (void**) &zurl, &pointer) == SUCCESS; zend_hash_move_forward_ex(arr_hash, &pointer), i++) {
 		ZEND_FETCH_RESOURCE(urls[i], mcrawler_url*, zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
-		urls[i]->index = i++;
+
+		if (zend_hash_get_current_key_ex(arr_hash, &key, &keylen, &ind, 0, &pointer) == HASH_KEY_IS_LONG) {
+			urls[i]->index = ind;
+		} else {
+			urls[i]->index = i;
+		}
 	}
 	urls[i] = NULL;
 
@@ -389,11 +396,18 @@ PHP_FUNCTION(mcrawler_serialize)
 	HashTable *arr_hash = Z_ARRVAL_P(zurls);
 	HashPosition pointer;
 	mcrawler_url *urls[zend_hash_num_elements(arr_hash) + 1];
-	int i = 0;
+	long ind;
+	char *key;
+	int i = 0, keylen;
 
-	for(zend_hash_internal_pointer_reset_ex(arr_hash, &pointer); zend_hash_get_current_data_ex(arr_hash, (void**) &zurl, &pointer) == SUCCESS; zend_hash_move_forward_ex(arr_hash, &pointer)) {
+	for(zend_hash_internal_pointer_reset_ex(arr_hash, &pointer); zend_hash_get_current_data_ex(arr_hash, (void**) &zurl, &pointer) == SUCCESS; zend_hash_move_forward_ex(arr_hash, &pointer), i++) {
 		ZEND_FETCH_RESOURCE(urls[i], mcrawler_url*, zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
-		urls[i]->index = i++;
+
+		if (zend_hash_get_current_key_ex(arr_hash, &key, &keylen, &ind, 0, &pointer) == HASH_KEY_IS_LONG) {
+			urls[i]->index = ind;
+		} else {
+			urls[i]->index = i;
+		}
 	}
 	urls[i] = NULL;
 
@@ -437,7 +451,7 @@ PHP_FUNCTION(mcrawler_unserialize)
 
 	for (int i = 0; urls[i]; i++) {
 		MAKE_STD_ZVAL(zurl);
-		add_next_index_zval(zurls, zurl);
+		add_index_zval(zurls, urls[i]->index, zurl);
 		php_minicrawler_register_url(urls[i], zurl TSRMLS_CC);
 	}
 

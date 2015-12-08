@@ -18,7 +18,7 @@ mcrawler_go([$url1, $url2], $settings, function ($url) {var_dump(mcrawler_get_ti
 var_dump(mcrawler_get_status($url1));
 var_dump(mcrawler_get_status($url2));
 
-$data = mcrawler_serialize([$url1, $url2], $settings);
+$data = mcrawler_serialize([$url1, 3 => $url2], $settings);
 mcrawler_close_settings($settings);
 mcrawler_close_url($url1);
 mcrawler_close_url($url2);

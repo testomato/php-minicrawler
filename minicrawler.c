@@ -16,6 +16,8 @@ static zend_function_entry minicrawler_functions[] = {
     PHP_FE(mcrawler_set_headers, NULL)
     PHP_FE(mcrawler_set_credentials, NULL)
     PHP_FE(mcrawler_set_postdata, NULL)
+    PHP_FE(mcrawler_set_options, NULL)
+    PHP_FE(mcrawler_set_option, NULL)
     PHP_FE(mcrawler_go, NULL)
     PHP_FE(mcrawler_get_status, NULL)
     PHP_FE(mcrawler_get_url, NULL)
@@ -188,6 +190,36 @@ PHP_FUNCTION(mcrawler_set_credentials)
 
 	strncpy(url->username, username, sizeof(url->username) - 1);
 	strncpy(url->password, password, sizeof(url->password) - 1);
+	RETURN_TRUE;
+}
+
+PHP_FUNCTION(mcrawler_set_options)
+{
+	mcrawler_url *url;
+	zval *zurl;
+	int options;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rl", &zurl, &options) == FAILURE) {
+		RETURN_FALSE;
+	}
+	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
+
+	url->options = options;
+	RETURN_TRUE;
+}
+
+PHP_FUNCTION(mcrawler_set_option)
+{
+	mcrawler_url *url;
+	zval *zurl;
+	int option;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rl", &zurl, &option) == FAILURE) {
+		RETURN_FALSE;
+	}
+	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
+
+	url->options |= option;
 	RETURN_TRUE;
 }
 

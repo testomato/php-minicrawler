@@ -19,6 +19,8 @@ PHP_FUNCTION(mcrawler_set_useragent);
 PHP_FUNCTION(mcrawler_set_headers);
 PHP_FUNCTION(mcrawler_set_credentials);
 PHP_FUNCTION(mcrawler_set_postdata);
+PHP_FUNCTION(mcrawler_set_options);
+PHP_FUNCTION(mcrawler_set_option);
 PHP_FUNCTION(mcrawler_go);
 PHP_FUNCTION(mcrawler_get_status);
 PHP_FUNCTION(mcrawler_get_url);

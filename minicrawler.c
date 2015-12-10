@@ -20,10 +20,12 @@ static zend_function_entry minicrawler_functions[] = {
     PHP_FE(mcrawler_set_postdata, NULL)
     PHP_FE(mcrawler_set_options, NULL)
     PHP_FE(mcrawler_set_option, NULL)
+    PHP_FE(mcrawler_set_cookies, NULL)
     PHP_FE(mcrawler_go, NULL)
     PHP_FE(mcrawler_get_status, NULL)
     PHP_FE(mcrawler_get_url, NULL)
     PHP_FE(mcrawler_get_timing, NULL)
+    PHP_FE(mcrawler_get_cookies, NULL)
     PHP_FE(mcrawler_serialize, NULL)
     PHP_FE(mcrawler_unserialize, NULL)
     PHP_FE(mcrawler_version, NULL)
@@ -270,6 +272,38 @@ PHP_FUNCTION(mcrawler_set_postdata)
 	RETURN_TRUE;
 }
 
+PHP_FUNCTION(mcrawler_set_cookies)
+{
+	mcrawler_url *url;
+	zval *zurl;
+	char *arg;
+	int arg_len;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rs", &zurl, &arg, &arg_len) == FAILURE) {
+		RETURN_FALSE;
+	}
+	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
+
+	char *p = arg, *q;
+	int i = 0;
+	while (p[0] != '\0' && i < sizeof(url->cookies)/sizeof(url->cookies[0])) {
+		q = strchrnul(p, '\n');
+		if (i < url->cookiecnt) {
+			mcrawler_free_cookie(&url->cookies[i]);
+		}
+		url->cookies[i].name = malloc(q-p);
+		url->cookies[i].value = malloc(q-p);
+		url->cookies[i].domain = malloc(q-p);
+		url->cookies[i].path = malloc(q-p);
+		sscanf(p, "%s\t%d\t%s\t%d\t%ld\t%s\t%s", url->cookies[i].domain, &url->cookies[i].host_only, url->cookies[i].path, &url->cookies[i].secure, &url->cookies[i].expires, url->cookies[i].name, url->cookies[i].value);
+		p = (q[0] == '\n') ? q + 1 : q;
+		i++;
+	}
+	url->cookiecnt = i;
+
+	RETURN_TRUE;
+}
+
 struct fcall {
 	zend_fcall_info info;
 	zend_fcall_info_cache info_cache;
@@ -443,6 +477,43 @@ PHP_FUNCTION(mcrawler_get_timing)
 		add_assoc_long(timingArray, "value", (timing->lastread ? timing->lastread : timing->done) - timing->connectionstart);
 		add_next_index_zval(return_value, timingArray);
 	}
+}
+
+PHP_FUNCTION(mcrawler_get_cookies)
+{
+	mcrawler_url *url;
+	zval *zurl;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+		RETURN_FALSE;
+	}
+	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
+
+	const char linefmt[] = "%s\t%d\t%s\t%d\t%ld\t%s\t%s\n";
+	size_t cookies_size = 0;
+	for (int i = 0; i < url->cookiecnt; i++) {
+		cookies_size += 
+			strlen(linefmt) +
+			strlen(url->cookies[i].domain) +
+			10 + 10 + 10 + // 3krát integer
+			strlen(url->cookies[i].path) +
+			strlen(url->cookies[i].name) +
+			strlen(url->cookies[i].value);
+	}
+
+	char buff[cookies_size + 1];
+	int len = 0, n;
+	if (url->cookiecnt) {
+		// netscape cookies.txt format
+		// @see http://www.cookiecentral.com/faq/#3.5
+		for (int i = 0; i < url->cookiecnt; i++) {
+			n = sprintf(buff+len, linefmt, url->cookies[i].domain, url->cookies[i].host_only, url->cookies[i].path, url->cookies[i].secure, url->cookies[i].expires, url->cookies[i].name, url->cookies[i].value);
+			if (n > 0) len += n;
+		}
+	}
+	buff[len] = 0;
+
+	RETURN_STRING(buff, 1);
 }
 
 PHP_FUNCTION(mcrawler_serialize)

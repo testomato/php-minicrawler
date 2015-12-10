@@ -20,8 +20,14 @@ echo "Delay: ";
 var_dump(mcrawler_get_delay($settings));
 
 mcrawler_go([$url1, $url2], $settings, function ($url) {var_dump(mcrawler_get_timing($url)); sleep(2);});
+echo "1: status: ";
 var_dump(mcrawler_get_status($url1));
+echo "2: status: ";
 var_dump(mcrawler_get_status($url2));
+
+echo "1: cookies: ";
+var_dump($cookies = mcrawler_get_cookies($url1));
+mcrawler_set_cookies($url1, $cookies);
 
 $data = mcrawler_serialize([$url1, 3 => $url2], $settings);
 mcrawler_close_settings($settings);

@@ -14,6 +14,11 @@ $settings = mcrawler_init_settings();
 mcrawler_close_settings($settings);
 
 $settings = mcrawler_init_settings(7, 70);
+echo "Timeout: ";
+var_dump(mcrawler_get_timeout($settings));
+echo "Delay: ";
+var_dump(mcrawler_get_delay($settings));
+
 mcrawler_go([$url1, $url2], $settings, function ($url) {var_dump(mcrawler_get_timing($url)); sleep(2);});
 var_dump(mcrawler_get_status($url1));
 var_dump(mcrawler_get_status($url2));

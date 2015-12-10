@@ -12,6 +12,8 @@ static zend_function_entry minicrawler_functions[] = {
     PHP_FE(mcrawler_init_settings, NULL)
     PHP_FE(mcrawler_close_url, NULL)
     PHP_FE(mcrawler_close_settings, NULL)
+    PHP_FE(mcrawler_get_timeout, NULL)
+    PHP_FE(mcrawler_get_delay, NULL)
     PHP_FE(mcrawler_set_useragent, NULL)
     PHP_FE(mcrawler_set_headers, NULL)
     PHP_FE(mcrawler_set_credentials, NULL)
@@ -142,6 +144,32 @@ PHP_FUNCTION(mcrawler_close_settings)
 
 	zend_list_delete(Z_LVAL_P(zsetting));
 	RETURN_TRUE;
+}
+
+PHP_FUNCTION(mcrawler_get_timeout)
+{
+	mcrawler_settings *settings;
+	zval *zsettings;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zsettings) == FAILURE) {
+		RETURN_FALSE;
+	}
+	ZEND_FETCH_RESOURCE(settings, mcrawler_settings*, &zsettings, -1, MCRAWLER_SETTINGS_RES_NAME, le_mcrawler_settings);
+
+	RETURN_LONG(settings->timeout);
+}
+
+PHP_FUNCTION(mcrawler_get_delay)
+{
+	mcrawler_settings *settings;
+	zval *zsettings;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zsettings) == FAILURE) {
+		RETURN_FALSE;
+	}
+	ZEND_FETCH_RESOURCE(settings, mcrawler_settings*, &zsettings, -1, MCRAWLER_SETTINGS_RES_NAME, le_mcrawler_settings);
+
+	RETURN_LONG(settings->delay);
 }
 
 PHP_FUNCTION(mcrawler_set_useragent)

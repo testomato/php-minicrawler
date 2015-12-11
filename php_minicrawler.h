@@ -32,6 +32,7 @@ PHP_FUNCTION(mcrawler_get_url);
 PHP_FUNCTION(mcrawler_get_method);
 PHP_FUNCTION(mcrawler_get_request);
 PHP_FUNCTION(mcrawler_get_redirected_to);
+PHP_FUNCTION(mcrawler_get_redirect_info);
 PHP_FUNCTION(mcrawler_get_header);
 PHP_FUNCTION(mcrawler_get_body);
 PHP_FUNCTION(mcrawler_get_response_size);
@@ -47,6 +48,8 @@ typedef struct {
 	long id;
 	void ***thread_ctx;
 } php_mcrawler_ctx;
+
+void timing_to_zval(mcrawler_timing *, zval *);
 
 extern zend_module_entry minicrawler_module_entry;
 #define phpext_minicrawler_ptr &minicrawler_module_entry

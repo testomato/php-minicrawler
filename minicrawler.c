@@ -22,7 +22,6 @@ static zend_function_entry minicrawler_functions[] = {
     PHP_FE(mcrawler_set_option, NULL)
     PHP_FE(mcrawler_set_cookies, NULL)
     PHP_FE(mcrawler_go, NULL)
-
     PHP_FE(mcrawler_get_index, NULL)
     PHP_FE(mcrawler_get_state, NULL)
     PHP_FE(mcrawler_get_status, NULL)
@@ -30,10 +29,10 @@ static zend_function_entry minicrawler_functions[] = {
     PHP_FE(mcrawler_get_method, NULL)
     PHP_FE(mcrawler_get_request, NULL)
     PHP_FE(mcrawler_get_redirected_to, NULL)
+    PHP_FE(mcrawler_get_redirect_info, NULL)
     PHP_FE(mcrawler_get_header, NULL)
     PHP_FE(mcrawler_get_body, NULL)
     PHP_FE(mcrawler_get_response_size, NULL)
-
     PHP_FE(mcrawler_get_timing, NULL)
     PHP_FE(mcrawler_get_cookies, NULL)
     PHP_FE(mcrawler_serialize, NULL)
@@ -467,7 +466,11 @@ PHP_FUNCTION(mcrawler_get_request)
 	}
 	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 
-	RETURN_STRINGL(url->request, url->request_len, 1);
+	if (url->request) {
+		RETURN_STRINGL(url->request, url->request_len, 1);
+	} else {
+		RETURN_NULL();
+	}
 }
 
 PHP_FUNCTION(mcrawler_get_redirected_to)
@@ -480,7 +483,47 @@ PHP_FUNCTION(mcrawler_get_redirected_to)
 	}
 	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 
-	RETURN_STRING(url->redirectedto, 1);
+	if (url->redirectedto) {
+		RETURN_STRING(url->redirectedto, 1);
+	} else {
+		RETURN_NULL();
+	}
+}
+
+PHP_FUNCTION(mcrawler_get_redirect_info)
+{
+	mcrawler_url *url;
+	zval *zurl;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+		RETURN_FALSE;
+	}
+	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
+
+	// at first reverse order
+	mcrawler_redirect_info *rinfo = url->redirect_info, *reversed = NULL, *prev;
+	while (rinfo) {
+		prev = reversed;
+		reversed = rinfo;
+		rinfo = rinfo->next;
+		reversed->next = prev;
+	}
+
+	zval *info, *timing;
+	array_init(return_value);
+
+	for (rinfo = reversed; rinfo; rinfo = rinfo->next) {
+		ALLOC_INIT_ZVAL(info);
+		array_init(info);
+
+		ALLOC_INIT_ZVAL(timing);
+		timing_to_zval(&rinfo->timing, timing);
+
+		add_assoc_string(info, "url", rinfo->url, 1);
+		add_assoc_long(info, "status", rinfo->status);
+		add_assoc_zval(info, "timing", timing);
+		add_next_index_zval(return_value, info);
+	}
 }
 
 PHP_FUNCTION(mcrawler_get_header)
@@ -532,65 +575,7 @@ PHP_FUNCTION(mcrawler_get_timing)
 	}
 	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 
-	array_init(return_value);
-	mcrawler_timing *timing = &url->timing;
-	zval *timingArray;
-
-	if (timing->dnsstart) {
-		ALLOC_INIT_ZVAL(timingArray);
-		array_init(timingArray);
-		add_assoc_string(timingArray, "metric", "DNS Lookup", 1);
-		add_assoc_long(timingArray, "value", (timing->dnsend ? timing->dnsend : timing->done) - timing->dnsstart);
-		add_next_index_zval(return_value, timingArray);
-	}
-
-	if (timing->connectionstart) {
-		ALLOC_INIT_ZVAL(timingArray);
-		array_init(timingArray);
-		add_assoc_string(timingArray, "metric", "Initial connection", 1);
-		add_assoc_long(timingArray, "value", (timing->requeststart ? timing->requeststart : timing->done) - timing->connectionstart);
-		add_next_index_zval(return_value, timingArray);
-	}
-
-	if (timing->sslstart) {
-		ALLOC_INIT_ZVAL(timingArray);
-		array_init(timingArray);
-		add_assoc_string(timingArray, "metric", "SSL", 1);
-		add_assoc_long(timingArray, "value", (timing->sslend ? timing->sslend : timing->done) - timing->sslstart);
-		add_next_index_zval(return_value, timingArray);
-	}
-
-	if (timing->requeststart) {
-		ALLOC_INIT_ZVAL(timingArray);
-		array_init(timingArray);
-		add_assoc_string(timingArray, "metric", "Request", 1);
-		add_assoc_long(timingArray, "value", (timing->requestend ? timing->requestend : timing->done) - timing->requeststart);
-		add_next_index_zval(return_value, timingArray);
-	}
-
-	if (timing->requestend) {
-		ALLOC_INIT_ZVAL(timingArray);
-		array_init(timingArray);
-		add_assoc_string(timingArray, "metric", "Waiting", 1);
-		add_assoc_long(timingArray, "value", (timing->firstbyte ? timing->firstbyte : timing->done) - timing->requestend);
-		add_next_index_zval(return_value, timingArray);
-	}
-
-	if (timing->firstbyte) {
-		ALLOC_INIT_ZVAL(timingArray);
-		array_init(timingArray);
-		add_assoc_string(timingArray, "metric", "Content download", 1);
-		add_assoc_long(timingArray, "value", (timing->lastread ? timing->lastread : timing->done) - timing->firstbyte);
-		add_next_index_zval(return_value, timingArray);
-	}
-
-	if (timing->connectionstart) {
-		ALLOC_INIT_ZVAL(timingArray);
-		array_init(timingArray);
-		add_assoc_string(timingArray, "metric", "Total", 1);
-		add_assoc_long(timingArray, "value", (timing->lastread ? timing->lastread : timing->done) - timing->connectionstart);
-		add_next_index_zval(return_value, timingArray);
-	}
+	timing_to_zval(&url->timing, return_value);
 }
 
 PHP_FUNCTION(mcrawler_get_cookies)
@@ -707,4 +692,66 @@ PHP_FUNCTION(mcrawler_unserialize)
 PHP_FUNCTION(mcrawler_version)
 {
 	RETURN_STRING(mcrawler_version(), 1);
+}
+
+void timing_to_zval(mcrawler_timing *timing, zval *ret)
+{
+	array_init(ret);
+	zval *timingArray;
+
+	if (timing->dnsstart) {
+		ALLOC_INIT_ZVAL(timingArray);
+		array_init(timingArray);
+		add_assoc_string(timingArray, "metric", "DNS Lookup", 1);
+		add_assoc_long(timingArray, "value", (timing->dnsend ? timing->dnsend : timing->done) - timing->dnsstart);
+		add_next_index_zval(ret, timingArray);
+	}
+
+	if (timing->connectionstart) {
+		ALLOC_INIT_ZVAL(timingArray);
+		array_init(timingArray);
+		add_assoc_string(timingArray, "metric", "Initial connection", 1);
+		add_assoc_long(timingArray, "value", (timing->requeststart ? timing->requeststart : timing->done) - timing->connectionstart);
+		add_next_index_zval(ret, timingArray);
+	}
+
+	if (timing->sslstart) {
+		ALLOC_INIT_ZVAL(timingArray);
+		array_init(timingArray);
+		add_assoc_string(timingArray, "metric", "SSL", 1);
+		add_assoc_long(timingArray, "value", (timing->sslend ? timing->sslend : timing->done) - timing->sslstart);
+		add_next_index_zval(ret, timingArray);
+	}
+
+	if (timing->requeststart) {
+		ALLOC_INIT_ZVAL(timingArray);
+		array_init(timingArray);
+		add_assoc_string(timingArray, "metric", "Request", 1);
+		add_assoc_long(timingArray, "value", (timing->requestend ? timing->requestend : timing->done) - timing->requeststart);
+		add_next_index_zval(ret, timingArray);
+	}
+
+	if (timing->requestend) {
+		ALLOC_INIT_ZVAL(timingArray);
+		array_init(timingArray);
+		add_assoc_string(timingArray, "metric", "Waiting", 1);
+		add_assoc_long(timingArray, "value", (timing->firstbyte ? timing->firstbyte : timing->done) - timing->requestend);
+		add_next_index_zval(ret, timingArray);
+	}
+
+	if (timing->firstbyte) {
+		ALLOC_INIT_ZVAL(timingArray);
+		array_init(timingArray);
+		add_assoc_string(timingArray, "metric", "Content download", 1);
+		add_assoc_long(timingArray, "value", (timing->lastread ? timing->lastread : timing->done) - timing->firstbyte);
+		add_next_index_zval(ret, timingArray);
+	}
+
+	if (timing->connectionstart) {
+		ALLOC_INIT_ZVAL(timingArray);
+		array_init(timingArray);
+		add_assoc_string(timingArray, "metric", "Total", 1);
+		add_assoc_long(timingArray, "value", (timing->lastread ? timing->lastread : timing->done) - timing->connectionstart);
+		add_next_index_zval(ret, timingArray);
+	}
 }

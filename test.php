@@ -35,6 +35,8 @@ echo "1: request: ";
 var_dump(mcrawler_get_request($url1));
 echo "1: redirected_to: ";
 var_dump(mcrawler_get_redirected_to($url1));
+echo "1: redirect_info: ";
+var_dump(mcrawler_get_redirect_info($url1));
 echo "1: header: ";
 var_dump(mcrawler_get_header($url1));
 echo "1: body: ";

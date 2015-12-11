@@ -298,12 +298,15 @@ PHP_FUNCTION(mcrawler_set_cookies)
 	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 
 	char *p = arg, *q;
-	int i = 0;
+	int i;
+
+	for (i = 0; i < url->cookiecnt; i++) {
+		mcrawler_free_cookie(&url->cookies[i]);
+	}
+
+	i = 0;
 	while (p[0] != '\0' && i < sizeof(url->cookies)/sizeof(url->cookies[0])) {
 		q = strchrnul(p, '\n');
-		if (i < url->cookiecnt) {
-			mcrawler_free_cookie(&url->cookies[i]);
-		}
 		url->cookies[i].name = malloc(q-p);
 		url->cookies[i].value = malloc(q-p);
 		url->cookies[i].domain = malloc(q-p);

@@ -42,6 +42,7 @@ PHP_FUNCTION(mcrawler_get_timing);
 PHP_FUNCTION(mcrawler_get_cookies);
 PHP_FUNCTION(mcrawler_get_content_type);
 PHP_FUNCTION(mcrawler_get_charset);
+PHP_FUNCTION(mcrawler_get_www_authenticate);
 PHP_FUNCTION(mcrawler_get_error_msg);
 PHP_FUNCTION(mcrawler_serialize);
 PHP_FUNCTION(mcrawler_unserialize);

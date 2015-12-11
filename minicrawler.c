@@ -37,6 +37,7 @@ static zend_function_entry minicrawler_functions[] = {
     PHP_FE(mcrawler_get_cookies, NULL)
     PHP_FE(mcrawler_get_content_type, NULL)
     PHP_FE(mcrawler_get_charset, NULL)
+    PHP_FE(mcrawler_get_www_authenticate, NULL)
     PHP_FE(mcrawler_get_error_msg, NULL)
     PHP_FE(mcrawler_serialize, NULL)
     PHP_FE(mcrawler_unserialize, NULL)
@@ -647,6 +648,23 @@ PHP_FUNCTION(mcrawler_get_charset)
 
 	if (url->contenttype) {
 		RETURN_STRING(url->charset, 1);
+	} else {
+		RETURN_NULL();
+	}
+}
+
+PHP_FUNCTION(mcrawler_get_www_authenticate)
+{
+	mcrawler_url *url;
+	zval *zurl;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+		RETURN_FALSE;
+	}
+	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
+
+	if (url->wwwauthenticate) {
+		RETURN_STRING(url->wwwauthenticate, 1);
 	} else {
 		RETURN_NULL();
 	}

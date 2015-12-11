@@ -45,6 +45,12 @@ echo "1: response_size: ";
 var_dump(mcrawler_get_response_size($url1));
 echo "1: cookies: ";
 var_dump($cookies = mcrawler_get_cookies($url1));
+echo "1: content_type: ";
+var_dump($cookies = mcrawler_get_content_type($url1));
+echo "1: charset: ";
+var_dump($cookies = mcrawler_get_charset($url1));
+echo "1: error_msg: ";
+var_dump($cookies = mcrawler_get_error_msg($url1));
 mcrawler_set_cookies($url1, $cookies);
 
 $data = mcrawler_serialize([$url1, 3 => $url2], $settings);

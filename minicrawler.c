@@ -720,7 +720,8 @@ PHP_FUNCTION(mcrawler_serialize)
 
 	mcrawler_urls_serialize(urls, settings, &buf, &buf_sz);
 
-	RETURN_STRINGL(buf, buf_sz, 0);
+	RETVAL_STRINGL(buf, buf_sz, 1);
+	free(buf);
 }
 
 static void *emalloc_func(size_t size) {

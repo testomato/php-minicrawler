@@ -67,8 +67,8 @@ static void mcrawler_url_dtor(zend_rsrc_list_entry *rsrc TSRMLS_DC)
 	mcrawler_url *url = (mcrawler_url *)rsrc->ptr;
 	if (url) {
 		efree(url->userdata);
+		mcrawler_free_url(url);
 		efree(url);
-		//TODO, uvolnit vše
 	}
 }
 

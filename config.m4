@@ -19,3 +19,8 @@ if test "$PHP_MINICRAWLER" != "no"; then
 
   PHP_NEW_EXTENSION(minicrawler, minicrawler.c, $ext_shared)
 fi
+
+AC_PROG_CC_C99
+if test "${ac_cv_prog_cc_c99}" = "no"; then
+    AC_MSG_ERROR([your compiler does not support ISO Standard C 99])
+fi

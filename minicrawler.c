@@ -103,6 +103,8 @@ PHP_MINIT_FUNCTION(minicrawler)
 	REGISTER_LONG_CONSTANT("MCURL_OPT_CONVERT_TO_UTF8", MCURL_OPT_CONVERT_TO_UTF8, CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("MCURL_OPT_GZIP", MCURL_OPT_GZIP, CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("MCURL_OPT_IPV6", MCURL_OPT_IPV6, CONST_CS | CONST_PERSISTENT);
+
+	return SUCCESS;
 }
 
 static void php_minicrawler_register_url(mcrawler_url *url, zval *zurl TSRMLS_DC) {
@@ -395,9 +397,10 @@ PHP_FUNCTION(mcrawler_go)
 	HashTable *arr_hash = Z_ARRVAL_P(zurls);
 	HashPosition pointer;
 	mcrawler_url *urls[zend_hash_num_elements(arr_hash) + 1];
-	long ind;
+	ulong ind;
 	char *key;
-	int i = 0, keylen;
+	int i = 0;
+	uint keylen;
 
 	for(zend_hash_internal_pointer_reset_ex(arr_hash, &pointer); zend_hash_get_current_data_ex(arr_hash, (void**) &zurl, &pointer) == SUCCESS; zend_hash_move_forward_ex(arr_hash, &pointer), i++) {
 		ZEND_FETCH_RESOURCE(urls[i], mcrawler_url*, zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
@@ -493,7 +496,7 @@ PHP_FUNCTION(mcrawler_get_request)
 	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 
 	if (url->request) {
-		RETURN_STRINGL(url->request, url->request_len, 1);
+		RETURN_STRINGL((char *)url->request, url->request_len, 1);
 	} else {
 		RETURN_NULL();
 	}
@@ -562,7 +565,7 @@ PHP_FUNCTION(mcrawler_get_header)
 	}
 	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 
-	RETURN_STRINGL(url->buf, url->headlen, 1);
+	RETURN_STRINGL((char *)url->buf, url->headlen, 1);
 }
 
 PHP_FUNCTION(mcrawler_get_body)
@@ -575,7 +578,7 @@ PHP_FUNCTION(mcrawler_get_body)
 	}
 	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 
-	RETURN_STRINGL(url->buf + url->headlen, url->bufp - url->headlen, 1);
+	RETURN_STRINGL((char *)url->buf + url->headlen, url->bufp - url->headlen, 1);
 }
 
 PHP_FUNCTION(mcrawler_get_response_size)
@@ -717,9 +720,10 @@ PHP_FUNCTION(mcrawler_serialize)
 	HashTable *arr_hash = Z_ARRVAL_P(zurls);
 	HashPosition pointer;
 	mcrawler_url *urls[zend_hash_num_elements(arr_hash) + 1];
-	long ind;
+	ulong ind;
 	char *key;
-	int i = 0, keylen;
+	uint keylen;
+	int i = 0;
 
 	for(zend_hash_internal_pointer_reset_ex(arr_hash, &pointer); zend_hash_get_current_data_ex(arr_hash, (void**) &zurl, &pointer) == SUCCESS; zend_hash_move_forward_ex(arr_hash, &pointer), i++) {
 		ZEND_FETCH_RESOURCE(urls[i], mcrawler_url*, zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);

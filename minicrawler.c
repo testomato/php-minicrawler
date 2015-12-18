@@ -261,7 +261,7 @@ PHP_FUNCTION(mcrawler_set_options)
 {
 	mcrawler_url *url;
 	zval *zurl;
-	int options;
+	long options;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rl", &zurl, &options) == FAILURE) {
 		RETURN_FALSE;
@@ -276,7 +276,7 @@ PHP_FUNCTION(mcrawler_set_option)
 {
 	mcrawler_url *url;
 	zval *zurl;
-	int option;
+	long option;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rl", &zurl, &option) == FAILURE) {
 		RETURN_FALSE;

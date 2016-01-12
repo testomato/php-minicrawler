@@ -21,6 +21,7 @@ static zend_function_entry minicrawler_functions[] = {
     PHP_FE(mcrawler_set_options, NULL)
     PHP_FE(mcrawler_set_option, NULL)
     PHP_FE(mcrawler_set_cookies, NULL)
+    PHP_FE(mcrawler_add_cookies, NULL)
     PHP_FE(mcrawler_go, NULL)
     PHP_FE(mcrawler_get_index, NULL)
     PHP_FE(mcrawler_get_state, NULL)
@@ -306,6 +307,16 @@ PHP_FUNCTION(mcrawler_set_postdata)
 	RETURN_TRUE;
 }
 
+static void scan_cookie(char **str, mcrawler_cookie *cookie) {
+	char *q = strchrnul(*str, '\n'), *p = *str;
+	cookie->name = malloc(q-p);
+	cookie->value = malloc(q-p);
+	cookie->domain = malloc(q-p);
+	cookie->path = malloc(q-p);
+	sscanf(p, "%s\t%d\t%s\t%d\t%ld\t%s\t%s", cookie->domain, &cookie->host_only, cookie->path, &cookie->secure, &cookie->expires, cookie->name, cookie->value);
+	*str = (q[0] == '\n') ? q + 1 : q;
+}
+
 PHP_FUNCTION(mcrawler_set_cookies)
 {
 	mcrawler_url *url;
@@ -318,7 +329,7 @@ PHP_FUNCTION(mcrawler_set_cookies)
 	}
 	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 
-	char *p = arg, *q;
+	char *p = arg;
 	int i;
 
 	for (i = 0; i < url->cookiecnt; i++) {
@@ -327,13 +338,30 @@ PHP_FUNCTION(mcrawler_set_cookies)
 
 	i = 0;
 	while (p[0] != '\0' && i < sizeof(url->cookies)/sizeof(url->cookies[0])) {
-		q = strchrnul(p, '\n');
-		url->cookies[i].name = malloc(q-p);
-		url->cookies[i].value = malloc(q-p);
-		url->cookies[i].domain = malloc(q-p);
-		url->cookies[i].path = malloc(q-p);
-		sscanf(p, "%s\t%d\t%s\t%d\t%ld\t%s\t%s", url->cookies[i].domain, &url->cookies[i].host_only, url->cookies[i].path, &url->cookies[i].secure, &url->cookies[i].expires, url->cookies[i].name, url->cookies[i].value);
-		p = (q[0] == '\n') ? q + 1 : q;
+		scan_cookie(&p, &url->cookies[i]);
+		i++;
+	}
+	url->cookiecnt = i;
+
+	RETURN_TRUE;
+}
+
+PHP_FUNCTION(mcrawler_add_cookies)
+{
+	mcrawler_url *url;
+	zval *zurl;
+	char *arg;
+	int arg_len;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rs", &zurl, &arg, &arg_len) == FAILURE) {
+		RETURN_FALSE;
+	}
+	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
+
+	char *p = arg;
+	int i = url->cookiecnt;
+	while (p[0] != '\0' && i < sizeof(url->cookies)/sizeof(url->cookies[0])) {
+		scan_cookie(&p, &url->cookies[i]);
 		i++;
 	}
 	url->cookiecnt = i;

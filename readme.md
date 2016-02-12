@@ -35,7 +35,8 @@ On OS X with homebrew run `brew install c-ares zlib uriparser openssl`
 
 	phpize
 	./configure
-	make install
+	make
+	sudo make install
 	
 Add follow to `minicrawler.ini` or change `php.ini` file and restart PHP:
 

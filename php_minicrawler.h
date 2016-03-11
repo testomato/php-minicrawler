@@ -37,6 +37,7 @@ PHP_FUNCTION(mcrawler_get_redirect_info);
 PHP_FUNCTION(mcrawler_get_header);
 PHP_FUNCTION(mcrawler_get_body);
 PHP_FUNCTION(mcrawler_get_response_size);
+PHP_FUNCTION(mcrawler_get_options);
 PHP_FUNCTION(mcrawler_get_status);
 PHP_FUNCTION(mcrawler_get_url);
 PHP_FUNCTION(mcrawler_get_timing);

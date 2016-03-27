@@ -44,6 +44,7 @@ static zend_function_entry minicrawler_functions[] = {
     PHP_FE(mcrawler_serialize, NULL)
     PHP_FE(mcrawler_unserialize, NULL)
     PHP_FE(mcrawler_version, NULL)
+    PHP_FE(mcrawler_parse_url, NULL)
     PHP_FE_END
 };
 
@@ -891,4 +892,67 @@ void timing_to_zval(mcrawler_timing *timing, zval *ret)
 		add_assoc_long(timingArray, "value", (timing->lastread ? timing->lastread : timing->done) - timing->connectionstart);
 		add_next_index_zval(ret, timingArray);
 	}
+}
+
+PHP_FUNCTION(mcrawler_parse_url)
+{
+	char *input_s, *base_s;
+	int input_len, base_len;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|s", &input_s, &input_len, &base_s, &base_len) == FAILURE) {
+		RETURN_FALSE;
+	}
+
+	mcrawler_url_url url, base;
+	char * tmp;
+
+	if (base_s) {
+		if (mcrawler_url_parse(&base, base_s, NULL) == MCRAWLER_URL_FAILURE) {
+			// throw exc
+		}
+		if (mcrawler_url_parse(&url, input_s, &base) == MCRAWLER_URL_FAILURE) {
+			// throw exc
+		}
+		mcrawler_url_free_url(&base);
+	} else {
+		if (mcrawler_url_parse(&url, input_s, NULL) == MCRAWLER_URL_FAILURE) {
+			// throw exc
+		}
+	}
+
+	array_init(return_value);
+	add_assoc_string(return_value, "input", input_s, 1);
+	add_assoc_string(return_value, "base", base_s ? base_s : "", 1);
+	tmp = mcrawler_url_get_href(&url);
+	add_assoc_string(return_value, "href", tmp, 1);
+	free(tmp);
+	tmp = mcrawler_url_get_protocol(&url);
+	add_assoc_string(return_value, "protocol", tmp, 1);
+	free(tmp);
+	tmp = mcrawler_url_get_username(&url);
+	add_assoc_string(return_value, "username", tmp, 1);
+	free(tmp);
+	tmp = mcrawler_url_get_password(&url);
+	add_assoc_string(return_value, "password", tmp, 1);
+	free(tmp);
+	tmp = mcrawler_url_get_hostname(&url);
+	add_assoc_string(return_value, "hostname", tmp, 1);
+	free(tmp);
+	tmp = mcrawler_url_get_host(&url);
+	add_assoc_string(return_value, "host", tmp, 1);
+	free(tmp);
+	tmp = mcrawler_url_get_port(&url);
+	add_assoc_string(return_value, "port", tmp, 1);
+	free(tmp);
+	tmp = mcrawler_url_get_pathname(&url);
+	add_assoc_string(return_value, "pathname", tmp, 1);
+	free(tmp);
+	tmp = mcrawler_url_get_search(&url);
+	add_assoc_string(return_value, "search", tmp, 1);
+	free(tmp);
+	tmp = mcrawler_url_get_hash(&url);
+	add_assoc_string(return_value, "hash", tmp, 1);
+	free(tmp);
+
+	mcrawler_url_free_url(&url);
 }

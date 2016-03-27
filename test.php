@@ -65,3 +65,5 @@ mcrawler_close_url($url2);
 
 var_dump($r = mcrawler_unserialize($data));
 mcrawler_close_url($r[0][0]);
+
+var_dump(mcrawler_parse_url("/abcd", "http://testomato.com"));

@@ -5,6 +5,7 @@
 #define MINICRAWLER_WORLD_EXTNAME "minicrawler"
 
 #include <minicrawler/minicrawler.h>
+#include <minicrawler/minicrawler-url.h>
 
 #define MCRAWLER_URL_RES_NAME "minicrawler URL"
 #define MCRAWLER_SETTINGS_RES_NAME "minicrawler settings"
@@ -49,6 +50,7 @@ PHP_FUNCTION(mcrawler_get_error_msg);
 PHP_FUNCTION(mcrawler_serialize);
 PHP_FUNCTION(mcrawler_unserialize);
 PHP_FUNCTION(mcrawler_version);
+PHP_FUNCTION(mcrawler_parse_url);
 
 typedef struct {
 	long id;

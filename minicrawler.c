@@ -3,6 +3,7 @@
 #endif
 #include "php.h"
 #include "php_minicrawler.h"
+#include "zend_exceptions.h"
 
 int le_mcrawler_url;
 int le_mcrawler_settings;
@@ -61,6 +62,8 @@ zend_module_entry minicrawler_module_entry = {
     STANDARD_MODULE_PROPERTIES
 };
 
+static zend_class_entry *php_mcrawler_exception_ce, *php_mcrawler_url_exception_ce;
+
 #ifdef COMPILE_DL_MINICRAWLER
 ZEND_GET_MODULE(minicrawler)
 #endif
@@ -106,6 +109,14 @@ PHP_MINIT_FUNCTION(minicrawler)
 	REGISTER_LONG_CONSTANT("MCURL_OPT_CONVERT_TO_UTF8", 1<<MCURL_OPT_CONVERT_TO_UTF8, CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("MCURL_OPT_GZIP", 1<<MCURL_OPT_GZIP, CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("MCURL_OPT_IPV6", 1<<MCURL_OPT_IPV6, CONST_CS | CONST_PERSISTENT);
+
+	zend_class_entry ce;
+	zend_class_entry ce_url;
+	INIT_CLASS_ENTRY(ce, "McrawlerException", NULL);
+	INIT_CLASS_ENTRY(ce_url, "McrawlerUrlException", NULL);
+
+	php_mcrawler_exception_ce = zend_register_internal_class_ex(&ce, zend_exception_get_default(TSRMLS_CC), NULL TSRMLS_CC);
+	php_mcrawler_url_exception_ce = zend_register_internal_class_ex(&ce_url, zend_exception_get_default(TSRMLS_CC), NULL TSRMLS_CC);
 
 	return SUCCESS;
 }
@@ -908,15 +919,15 @@ PHP_FUNCTION(mcrawler_parse_url)
 
 	if (base_s) {
 		if (mcrawler_url_parse(&base, base_s, NULL) == MCRAWLER_URL_FAILURE) {
-			// throw exc
+			zend_throw_exception_ex(php_mcrawler_url_exception_ce, 0 TSRMLS_CC, "Invalid base URL");
 		}
 		if (mcrawler_url_parse(&url, input_s, &base) == MCRAWLER_URL_FAILURE) {
-			// throw exc
+			zend_throw_exception_ex(php_mcrawler_url_exception_ce, 0 TSRMLS_CC, "Invalid URL");
 		}
 		mcrawler_url_free_url(&base);
 	} else {
 		if (mcrawler_url_parse(&url, input_s, NULL) == MCRAWLER_URL_FAILURE) {
-			// throw exc
+			zend_throw_exception_ex(php_mcrawler_url_exception_ce, 0 TSRMLS_CC, "Invalid URL");
 		}
 	}
 

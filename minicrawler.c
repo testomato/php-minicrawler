@@ -946,12 +946,12 @@ PHP_FUNCTION(mcrawler_parse_url)
 	tmp = mcrawler_url_get_password(&url);
 	add_assoc_string(return_value, "password", tmp, 1);
 	free(tmp);
-	tmp = mcrawler_url_get_hostname(&url);
-	add_assoc_string(return_value, "hostname", tmp, 1);
-	free(tmp);
-	tmp = mcrawler_url_get_host(&url);
-	add_assoc_string(return_value, "host", tmp, 1);
-	free(tmp);
+	char *hostname = emalloc(256);
+	mcrawler_url_get_hostname(&url, hostname);
+	add_assoc_string(return_value, "hostname", hostname, 0);
+	char *host = emalloc(256 + 6);
+	mcrawler_url_get_host(&url, host);
+	add_assoc_string(return_value, "host", host, 0);
 	tmp = mcrawler_url_get_port(&url);
 	add_assoc_string(return_value, "port", tmp, 1);
 	free(tmp);

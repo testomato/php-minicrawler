@@ -5,12 +5,13 @@ Make sure that the comment is aligned:
 if test "$PHP_MINICRAWLER" != "no"; then
   AC_DEFINE(HAVE_MINICRAWLER, 1, [ ])
 
-  PHP_CHECK_LIBRARY([minicrawler], [mcrawler_go],
+  PHP_CHECK_LIBRARY([minicrawler-4], [mcrawler_go],
   [
-    PHP_ADD_LIBRARY_WITH_PATH([minicrawler], [/usr/lib], MINICRAWLER_SHARED_LIBADD)
+	PHP_EVAL_INCLINE(`pkg-config --cflags-only-I libminicrawler-4`)
+	PHP_EVAL_LIBLINE(`pkg-config --libs libminicrawler-4`, MINICRAWLER_SHARED_LIBADD)
     AC_DEFINE(HAVE_MINICRAWLERLIB, 1, [ ])
   ],[
-    AC_MSG_ERROR([wrong libminicrawler version or lib not found])
+    AC_MSG_ERROR([wrong libminicrawler-4 version or lib not found])
   ],[
     -L/usr/lib -lm
   ])

@@ -485,7 +485,7 @@ PHP_FUNCTION(mcrawler_get_state)
 	}
 	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 
-	RETURN_LONG(url->state);
+	RETURN_LONG(url->last_state);
 }
 
 PHP_FUNCTION(mcrawler_get_status)

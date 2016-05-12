@@ -27,6 +27,7 @@ PHP_FUNCTION(mcrawler_set_option);
 PHP_FUNCTION(mcrawler_set_cookies);
 PHP_FUNCTION(mcrawler_add_cookies);
 PHP_FUNCTION(mcrawler_go);
+PHP_FUNCTION(mcrawler_reset);
 PHP_FUNCTION(mcrawler_get_index);
 PHP_FUNCTION(mcrawler_get_state);
 PHP_FUNCTION(mcrawler_get_status);

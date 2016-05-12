@@ -24,6 +24,7 @@ static zend_function_entry minicrawler_functions[] = {
     PHP_FE(mcrawler_set_cookies, NULL)
     PHP_FE(mcrawler_add_cookies, NULL)
     PHP_FE(mcrawler_go, NULL)
+    PHP_FE(mcrawler_reset, NULL)
     PHP_FE(mcrawler_get_index, NULL)
     PHP_FE(mcrawler_get_state, NULL)
     PHP_FE(mcrawler_get_status, NULL)
@@ -460,6 +461,19 @@ PHP_FUNCTION(mcrawler_go)
 	mcrawler_go(urls, settings, callback, (void *)&fc);
 
 	RETURN_TRUE;
+}
+
+PHP_FUNCTION(mcrawler_reset)
+{
+	mcrawler_url *url;
+	zval *zurl;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+		RETURN_FALSE;
+	}
+	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
+
+	mcrawler_reset_url(url);
 }
 
 PHP_FUNCTION(mcrawler_get_index)

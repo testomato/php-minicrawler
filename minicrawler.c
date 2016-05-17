@@ -923,10 +923,10 @@ void timing_to_zval(mcrawler_timing *timing, zval *ret)
 
 PHP_FUNCTION(mcrawler_parse_url)
 {
-	char *input_s, *base_s;
+	char *input_s, *base_s = NULL;
 	int input_len, base_len;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|s", &input_s, &input_len, &base_s, &base_len) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|s!", &input_s, &input_len, &base_s, &base_len) == FAILURE) {
 		RETURN_FALSE;
 	}
 

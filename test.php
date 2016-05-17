@@ -67,6 +67,7 @@ var_dump($r = mcrawler_unserialize($data));
 mcrawler_close_url($r[0][0]);
 
 var_dump(mcrawler_parse_url("/abcd", "http://testomato.com"));
+var_dump(mcrawler_parse_url("http://testomato.com:81", NULL));
 try {
 	mcrawler_parse_url("/abcd", "x");
 } catch (\McrawlerUrlException $e) {

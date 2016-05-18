@@ -9,6 +9,7 @@
 
 #define MCRAWLER_URL_RES_NAME "minicrawler URL"
 #define MCRAWLER_SETTINGS_RES_NAME "minicrawler settings"
+#define MCRAWLER_URL_URL_RES_NAME "minicrawler parser URL"
 
 PHP_MINIT_FUNCTION(minicrawler);
 

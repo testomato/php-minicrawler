@@ -71,7 +71,12 @@ var_dump(mcrawler_parse_url("http://testomato.com:81", NULL));
 var_dump($t = mcrawler_parse_url("http://testomato.com:82"));
 var_dump(mcrawler_parse_url("/r", $t['resource']));
 try {
-	mcrawler_parse_url("/abcd", "x");
+	mcrawler_parse_url("/abcd");
 } catch (\McrawlerUrlException $e) {
-	echo $e->getMessage() . "\n";
+	echo $e->getCode() . ': ' . $e->getMessage() . "\n";
+}
+try {
+	mcrawler_parse_url("http://a b");
+} catch (\McrawlerUrlException $e) {
+	echo $e->getCode() . ': ' . $e->getMessage() . "\n";
 }

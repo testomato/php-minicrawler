@@ -18,6 +18,7 @@ static zend_function_entry minicrawler_functions[] = {
     PHP_FE(mcrawler_get_delay, NULL)
     PHP_FE(mcrawler_set_useragent, NULL)
     PHP_FE(mcrawler_set_headers, NULL)
+    PHP_FE(mcrawler_add_headers, NULL)
     PHP_FE(mcrawler_set_credentials, NULL)
     PHP_FE(mcrawler_set_postdata, NULL)
     PHP_FE(mcrawler_set_options, NULL)
@@ -289,7 +290,32 @@ PHP_FUNCTION(mcrawler_set_headers)
 	}
 	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 
-	strncpy(url->customheader, headers, sizeof(url->customheader) - 1);
+	if (headers_len > sizeof(url->customheader)-1) {
+		php_error_docref(NULL TSRMLS_CC, E_ERROR, "Custom HTTP headers are too long.");
+		RETURN_FALSE;
+	}
+	strcpy(url->customheader, headers);
+	RETURN_TRUE;
+}
+
+PHP_FUNCTION(mcrawler_add_headers)
+{
+	mcrawler_url *url;
+	zval *zurl;
+	char *headers;
+	int headers_len;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rs", &zurl, &headers, &headers_len) == FAILURE) {
+		RETURN_FALSE;
+	}
+	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
+
+	size_t offset = strlen(url->customheader);
+	if (offset + headers_len > sizeof(url->customheader)-1) {
+		php_error_docref(NULL TSRMLS_CC, E_ERROR, "Custom HTTP headers are too long.");
+		RETURN_FALSE;
+	}
+	strcpy(url->customheader + offset, headers);
 	RETURN_TRUE;
 }
 

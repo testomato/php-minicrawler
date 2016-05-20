@@ -21,6 +21,7 @@ PHP_FUNCTION(mcrawler_get_timeout);
 PHP_FUNCTION(mcrawler_get_delay);
 PHP_FUNCTION(mcrawler_set_useragent);
 PHP_FUNCTION(mcrawler_set_headers);
+PHP_FUNCTION(mcrawler_add_headers);
 PHP_FUNCTION(mcrawler_set_credentials);
 PHP_FUNCTION(mcrawler_set_postdata);
 PHP_FUNCTION(mcrawler_set_options);

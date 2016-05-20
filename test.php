@@ -4,6 +4,7 @@ echo "version: " . mcrawler_version() . "\n";
 $url1 = mcrawler_init_url("https://testomato.com");
 mcrawler_set_useragent($url1, 'test');
 mcrawler_set_headers($url1, 'X-A: B' . "\r\n");
+mcrawler_add_headers($url1, 'X-C: D' . "\r\n");
 mcrawler_set_credentials($url1, 'user', 'pass');
 mcrawler_set_postdata($url1, 'xxx');
 mcrawler_set_option($url1, \MCURL_OPT_GZIP | \MCURL_OPT_INSECURE);

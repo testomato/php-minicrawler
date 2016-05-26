@@ -37,6 +37,7 @@ static zend_function_entry minicrawler_functions[] = {
     PHP_FE(mcrawler_get_redirect_info, NULL)
     PHP_FE(mcrawler_get_header, NULL)
     PHP_FE(mcrawler_get_body, NULL)
+    PHP_FE(mcrawler_get_body_unsafe, NULL)
     PHP_FE(mcrawler_get_response_size, NULL)
     PHP_FE(mcrawler_get_options, NULL)
     PHP_FE(mcrawler_get_timing, NULL)
@@ -698,6 +699,19 @@ PHP_FUNCTION(mcrawler_get_body)
 	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 
 	RETURN_STRINGL((char *)url->buf + url->headlen, url->bufp - url->headlen, 1);
+}
+
+PHP_FUNCTION(mcrawler_get_body_unsafe)
+{
+	mcrawler_url *url;
+	zval *zurl;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+		RETURN_FALSE;
+	}
+	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
+
+	RETURN_STRINGL((char *)url->buf + url->headlen, url->bufp - url->headlen, 0);
 }
 
 PHP_FUNCTION(mcrawler_get_response_size)

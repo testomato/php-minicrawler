@@ -40,6 +40,7 @@ PHP_FUNCTION(mcrawler_get_redirected_to);
 PHP_FUNCTION(mcrawler_get_redirect_info);
 PHP_FUNCTION(mcrawler_get_header);
 PHP_FUNCTION(mcrawler_get_body);
+PHP_FUNCTION(mcrawler_get_body_unsafe);
 PHP_FUNCTION(mcrawler_get_response_size);
 PHP_FUNCTION(mcrawler_get_options);
 PHP_FUNCTION(mcrawler_get_status);

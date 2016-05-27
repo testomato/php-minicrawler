@@ -711,7 +711,8 @@ PHP_FUNCTION(mcrawler_get_body_unsafe)
 	}
 	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 
-	RETURN_STRINGL((char *)url->buf + url->headlen, url->bufp - url->headlen, 0);
+	php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "mcrawler_get_body_unsafe() is deprecated, use mcrawler_get_body()");
+	RETURN_STRINGL((char *)url->buf + url->headlen, url->bufp - url->headlen, 1);
 }
 
 PHP_FUNCTION(mcrawler_get_response_size)

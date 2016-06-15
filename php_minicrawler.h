@@ -61,7 +61,7 @@ typedef struct {
 	void ***thread_ctx;
 } php_mcrawler_ctx;
 
-void timing_to_zval(mcrawler_timing *, zval *);
+void timing_to_zval(mcrawler_timing *, int, zval *);
 
 extern zend_module_entry minicrawler_module_entry;
 #define phpext_minicrawler_ptr &minicrawler_module_entry

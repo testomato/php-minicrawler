@@ -673,7 +673,7 @@ PHP_FUNCTION(mcrawler_get_redirect_info)
 		array_init(info);
 
 		ALLOC_INIT_ZVAL(timing);
-		timing_to_zval(&reversed[len]->timing, timing);
+		timing_to_zval(&reversed[len]->timing, MCURL_S_DOWNLOADED, timing);
 
 		add_assoc_string(info, "url", reversed[len]->url, 1);
 		add_assoc_long(info, "status", reversed[len]->status);
@@ -759,7 +759,7 @@ PHP_FUNCTION(mcrawler_get_timing)
 	}
 	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 
-	timing_to_zval(&url->timing, return_value);
+	timing_to_zval(&url->timing, url->last_state, return_value);
 }
 
 PHP_FUNCTION(mcrawler_get_cookies)
@@ -944,7 +944,7 @@ PHP_FUNCTION(mcrawler_version)
 	RETURN_STRING(mcrawler_version(), 1);
 }
 
-void timing_to_zval(mcrawler_timing *timing, zval *ret)
+void timing_to_zval(mcrawler_timing *timing, int state, zval *ret)
 {
 	array_init(ret);
 	zval *timingArray;
@@ -993,7 +993,7 @@ void timing_to_zval(mcrawler_timing *timing, zval *ret)
 		ALLOC_INIT_ZVAL(timingArray);
 		array_init(timingArray);
 		add_assoc_string(timingArray, "metric", "Content download", 1);
-		add_assoc_long(timingArray, "value", (timing->lastread ? timing->lastread : timing->done) - timing->firstbyte);
+		add_assoc_long(timingArray, "value", (timing->lastread && state > MCURL_S_RECVREPLY ? timing->lastread : timing->done) - timing->firstbyte);
 		add_next_index_zval(ret, timingArray);
 	}
 
@@ -1001,7 +1001,7 @@ void timing_to_zval(mcrawler_timing *timing, zval *ret)
 		ALLOC_INIT_ZVAL(timingArray);
 		array_init(timingArray);
 		add_assoc_string(timingArray, "metric", "Total", 1);
-		add_assoc_long(timingArray, "value", (timing->lastread ? timing->lastread : timing->done) - timing->connectionstart);
+		add_assoc_long(timingArray, "value", (timing->lastread && state > MCURL_S_RECVREPLY ? timing->lastread : timing->done) - timing->connectionstart);
 		add_next_index_zval(ret, timingArray);
 	}
 }

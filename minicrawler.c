@@ -649,29 +649,37 @@ PHP_FUNCTION(mcrawler_get_redirect_info)
 	}
 	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 
-	// at first reverse order
-	mcrawler_redirect_info *rinfo = url->redirect_info, *reversed = NULL, *prev;
+	int len = 0, total;
+	mcrawler_redirect_info *rinfo = url->redirect_info;
+	// at first count how many
 	while (rinfo) {
-		prev = reversed;
-		reversed = rinfo;
+		len++;
 		rinfo = rinfo->next;
-		reversed->next = prev;
+	}
+	mcrawler_redirect_info *reversed[len];
+	rinfo = url->redirect_info;
+	total = len;
+	// store reversed order to the array reversed
+	while (rinfo) {
+		reversed[--len] = rinfo;
+		rinfo = rinfo->next;
 	}
 
 	zval *info, *timing;
 	array_init(return_value);
 
-	for (rinfo = reversed; rinfo; rinfo = rinfo->next) {
+	while (len < total) {
 		ALLOC_INIT_ZVAL(info);
 		array_init(info);
 
 		ALLOC_INIT_ZVAL(timing);
-		timing_to_zval(&rinfo->timing, timing);
+		timing_to_zval(&reversed[len]->timing, timing);
 
-		add_assoc_string(info, "url", rinfo->url, 1);
-		add_assoc_long(info, "status", rinfo->status);
+		add_assoc_string(info, "url", reversed[len]->url, 1);
+		add_assoc_long(info, "status", reversed[len]->status);
 		add_assoc_zval(info, "timing", timing);
 		add_next_index_zval(return_value, info);
+		len++;
 	}
 }
 

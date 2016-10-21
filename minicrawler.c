@@ -693,7 +693,12 @@ PHP_FUNCTION(mcrawler_get_header)
 	}
 	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 
-	RETURN_STRINGL((char *)url->buf, url->headlen, 1);
+	unsigned char *header;
+	size_t len;
+
+	mcrawler_url_header(url, &header, &len);
+
+	RETURN_STRINGL((char *)header, len, 1);
 }
 
 PHP_FUNCTION(mcrawler_get_body)
@@ -706,7 +711,12 @@ PHP_FUNCTION(mcrawler_get_body)
 	}
 	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 
-	RETURN_STRINGL((char *)url->buf + url->headlen, url->bufp - url->headlen, 1);
+	unsigned char *body;
+	size_t len;
+
+	mcrawler_url_body(url, &body, &len);
+
+	RETURN_STRINGL((char *)body, len, 1);
 }
 
 PHP_FUNCTION(mcrawler_get_response_size)
@@ -719,7 +729,13 @@ PHP_FUNCTION(mcrawler_get_response_size)
 	}
 	ZEND_FETCH_RESOURCE(url, mcrawler_url*, &zurl, -1, MCRAWLER_URL_RES_NAME, le_mcrawler_url);
 
-	RETURN_LONG(url->bufp);
+	unsigned char *header, *body;
+	size_t header_len, body_len;
+
+	mcrawler_url_header(url, &header, &header_len);
+	mcrawler_url_body(url, &body, &body_len);
+
+	RETURN_LONG((long)header_len + body_len);
 }
 
 PHP_FUNCTION(mcrawler_get_options)

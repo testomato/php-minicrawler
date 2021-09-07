@@ -1094,33 +1094,30 @@ void timing_to_zval(mcrawler_timing *timing, int state, zval *ret)
 
 PHP_FUNCTION(mcrawler_parse_url)
 {
-	char *input_s;
-	int input_len;
-	zval *zbase_url = NULL;
+	zval             *zbase_url = NULL;
+	zend_string      *input;
+	mcrawler_url_url  base_url, *url, *p_base_url;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|z", &input_s, &input_len, &zbase_url) == FAILURE) {
-		RETURN_FALSE;
-	}
-
-	mcrawler_url_url *url, *base = NULL;
-	int base_alloc = 0;
+	ZEND_PARSE_PARAMETERS_START(1, 2)
+		Z_PARAM_STR(input)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_ZVAL(zbase_url)
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (zbase_url) {
 		switch (Z_TYPE_P(zbase_url)) {
 			case IS_NULL:
-				base = NULL;
+				p_base_url = NULL;
 				break;
 			case IS_STRING:
-				base = (mcrawler_url_url *)malloc(sizeof(mcrawler_url_url));
-				if (mcrawler_url_parse(base, Z_STRVAL_P(zbase_url), NULL) == MCRAWLER_URL_FAILURE) {
-					free(base);
+				if (mcrawler_url_parse(&base_url, Z_STRVAL_P(zbase_url), NULL) == MCRAWLER_URL_FAILURE) {
 					zend_throw_exception_ex(php_mcrawler_url_exception_ce, 0 TSRMLS_CC, "Invalid base URL");
 					RETURN_FALSE;
 				}
-				base_alloc = 1;
+				p_base_url = &base_url;
 				break;
 			case IS_RESOURCE:
-				if ((base = (mcrawler_url_url*)zend_fetch_resource(Z_RES_P(zbase_url), MCRAWLER_URL_URL_RES_NAME, le_mcrawler_url_url)) == NULL) {
+				if ((p_base_url = (mcrawler_url_url*)zend_fetch_resource(Z_RES_P(zbase_url), MCRAWLER_URL_URL_RES_NAME, le_mcrawler_url_url)) == NULL) {
 					RETURN_FALSE;
 				}
 				break;
@@ -1128,20 +1125,17 @@ PHP_FUNCTION(mcrawler_parse_url)
 				php_error_docref(NULL TSRMLS_CC, E_ERROR, "Invalid type for base URL, only string or resource allowed.");
 				RETURN_FALSE;
 		}
+	} else {
+		p_base_url = NULL;
 	}
 
 	url = emalloc(sizeof(mcrawler_url_url));
 	mcrawler_url_parse_state state;
 
-	if (mcrawler_url_parse2(url, input_s, base, &state) == MCRAWLER_URL_FAILURE) {
+	if (mcrawler_url_parse2(url, ZSTR_VAL(input), p_base_url, &state) == MCRAWLER_URL_FAILURE) {
 		efree(url);
 		zend_throw_exception_ex(php_mcrawler_url_exception_ce, state TSRMLS_CC, "Invalid URL");
 		RETURN_FALSE;
-	}
-
-	if (base_alloc) {
-		mcrawler_url_free_url(base);
-		free(base);
 	}
 
 	char *tmp;
@@ -1153,7 +1147,7 @@ PHP_FUNCTION(mcrawler_parse_url)
 	ZVAL_RES(&zurl, zend_register_resource(url, le_mcrawler_url_url));
 	add_assoc_zval(return_value, "resource", &zurl);
 
-	add_assoc_string(return_value, "input", input_s);
+	add_assoc_str(return_value, "input", input);
 	tmp = mcrawler_url_get_href(url);
 	add_assoc_string(return_value, "href", tmp);
 	free(tmp);
@@ -1166,10 +1160,10 @@ PHP_FUNCTION(mcrawler_parse_url)
 	tmp = mcrawler_url_get_password(url);
 	add_assoc_string(return_value, "password", tmp);
 	free(tmp);
-	char *hostname = emalloc(256);
+	char hostname[256];
 	mcrawler_url_get_hostname(url, hostname);
 	add_assoc_string(return_value, "hostname", hostname);
-	char *host = emalloc(256 + 6);
+	char host[256 + 6];
 	mcrawler_url_get_host(url, host);
 	add_assoc_string(return_value, "host", host);
 	tmp = mcrawler_url_get_port(url);

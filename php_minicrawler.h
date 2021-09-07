@@ -56,7 +56,7 @@ PHP_FUNCTION(mcrawler_version);
 PHP_FUNCTION(mcrawler_parse_url);
 
 typedef struct {
-	long id;
+	zend_resource *res;
 	void ***thread_ctx;
 } php_mcrawler_ctx;
 

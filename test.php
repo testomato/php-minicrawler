@@ -1,6 +1,7 @@
 <?php
 echo "version: " . mcrawler_version() . "\n";
 
+$url0 = mcrawler_init_url(NULL);
 $url1 = mcrawler_init_url("https://testomato.com");
 mcrawler_set_useragent($url1, 'test');
 mcrawler_set_headers($url1, 'X-A: B' . "\r\n");
@@ -21,6 +22,7 @@ var_dump(mcrawler_get_timeout($settings));
 echo "Delay: ";
 var_dump(mcrawler_get_delay($settings));
 
+mcrawler_go([$url0], $settings, function () {});
 mcrawler_go([$url1, $url2], $settings, function ($url) {var_dump(mcrawler_get_timing($url)); sleep(0);});
 echo "1: options: ";
 var_dump(mcrawler_get_options($url1));
@@ -78,6 +80,11 @@ try {
 }
 try {
 	mcrawler_parse_url("http://a b");
+} catch (\McrawlerUrlException $e) {
+	echo $e->getCode() . ': ' . $e->getMessage() . "\n";
+}
+try {
+    mcrawler_parse_url("http://testomato.com:80", 3);
 } catch (\McrawlerUrlException $e) {
 	echo $e->getCode() . ': ' . $e->getMessage() . "\n";
 }

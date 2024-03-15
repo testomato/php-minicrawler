@@ -2,7 +2,7 @@
 # https://docs.docker.com/build/bake/reference/
 
 ####################################################################################################
-# docker buildx bake --file docker-bake.hcl php-minicralwer --push --no-cache --progress=plain
+# docker buildx bake --file docker-bake.hcl php-minicrawler --push --no-cache --progress=plain
 ####################################################################################################
 
 target "php-minicrawler" {
@@ -11,8 +11,8 @@ target "php-minicrawler" {
   platforms  = ["linux/amd64", "linux/arm64"]
   pull       = true
   tags       = [
-    "dr.brzy.cz/testomato/php-minicralwer:latest",
-    "dr.brzy.cz/testomato/php-minicralwer:v5.2.6"
+    "dr.brzy.cz/testomato/php-minicrawler:latest",
+    "dr.brzy.cz/testomato/php-minicrawler:v5.2.6"
   ]
 }
 

@@ -59,7 +59,7 @@ then run it
 
 ```shell
 docker pull dr.brzy.cz/testomato/php-minicrawler:latest
-docker run -it dr.brzy.cz/testomato/php-minicrawler:latest /bin/bash
+docker run -it --rm dr.brzy.cz/testomato/php-minicrawler:latest /bin/bash
 ```
 
 Inside container run `./minicrawler5`

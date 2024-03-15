@@ -4,10 +4,10 @@ stages:
 Build Docker Container:
   stage: Build
   tags: [ shell ]
-  before_script:
+  script:
     - docker info
     - docker context ls
-    - docker context ls | grep -q builder || docker context create builder
+    #- docker context ls | grep -q builder || docker context create builder
 #    - docker context create builder
 #    - docker buildx create --name builder --use
 #  script:

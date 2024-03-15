@@ -7,7 +7,7 @@ Cleanup docker cache:
       when: manual
   allow_failure: true
 
-Build php-minicrawler:
+Build php-minicrawler container:
   tags: [ shell ]
 
   before_script: >

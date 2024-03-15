@@ -1,19 +1,3 @@
-# syntax=docker/dockerfile:experimental
-FROM debian:bookworm-slim as php-minicrawler-src
-
-ENV DEBIAN_FRONTEND=noninteractive
-
-ARG PHP_MINICRAWLER_VERSION="trunk"
-
-RUN --mount=type=ssh  \
-    apt update -y \
-    && apt -y install openssh-client git \
-    && install -m 0700 -d ~/.ssh \
-    && ssh-keyscan gitlab.int.wikidi.net >> ~/.ssh/known_hosts \
-    && git clone --single-branch --branch $PHP_MINICRAWLER_VERSION git@gitlab.int.wikidi.net:testomato/php-minicrawler.git
-
-# ----------------------------------------------------------------------------------------------------------------------
-
 FROM debian:bookworm-slim as php-minicrawler
 
 ENV LANGUAGE en_US.UTF-8
@@ -80,7 +64,7 @@ ENV LC_ALL en_US.UTF-8
 RUN echo "extension=minicrawler.so" > /minicrawler.ini
 
 WORKDIR /php-minicrawler
-COPY --from=php-minicrawler-src /php-minicrawler /php-minicrawler
+COPY . /php-minicrawler
 
 RUN phpize || exit 40 \
 	&& ./configure || exit 41 \

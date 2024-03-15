@@ -1,9 +1,4 @@
-stages:
-  - Build
-  - Tools
-
 Cleanup docker cache:
-  stage: Tools
   tags: [ shell ]
   script:
     - docker buildx prune --force
@@ -13,7 +8,6 @@ Cleanup docker cache:
   allow_failure: true
 
 Build php-minicrawler:
-  stage: Build
   tags: [ shell ]
 
   before_script: >

@@ -35,3 +35,4 @@ Build php-minicrawler:
         - "*.{c,h,xml,php,yml}"
         - Dockerfile
       when: always
+    - when: manual

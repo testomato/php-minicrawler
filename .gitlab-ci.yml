@@ -18,7 +18,7 @@ Build Docker Container:
     docker buildx bake --file docker-bake.hcl php-minicrawler --print
 
   after_script:
-    - docker buildx prune
+    - docker buildx prune --force
     - docker buildx du
 
   rules:

@@ -1,8 +1,9 @@
 stages:
   - Build
+  - Tools
 
 Cleanup docker cache:
-  stage: Build
+  stage: Tools
   tags: [ shell ]
   script:
     - docker buildx prune --force

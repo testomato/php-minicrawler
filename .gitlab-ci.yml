@@ -4,10 +4,14 @@ stages:
 Build Docker Container:
   stage: Build
   tags: [ shell ]
+  before_script:
+    - docker info
+    - docker context ls
+    - docker context ls | grep -q builder || docker context create builder
+#    - docker context create builder
+#    - docker buildx create --name builder --use
   script:
-    - time docker context create builder
-    - time docker buildx create --name builder --use
-    - time docker buildx bake --file docker-bake.hcl php-minicrawler --print
+#    - docker buildx bake --file docker-bake.hcl php-minicrawler --print
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: always

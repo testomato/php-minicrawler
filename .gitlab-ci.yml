@@ -34,4 +34,4 @@ Build php-minicrawler container:
       changes:
         - /*.{c,h,xml,php,yml}
         - /Dockerfile
-      when: manual
+      when: always

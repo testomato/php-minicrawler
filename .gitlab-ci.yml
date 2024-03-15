@@ -19,6 +19,7 @@ Build Docker Container:
 
   after_script: >
     docker builder prune
+    docker buildx du
 
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

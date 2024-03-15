@@ -26,7 +26,7 @@ Add following to `minicrawler.ini` or change `php.ini` file and restart PHP:
 extension="/usr/local/opt/php-minicrawler/modules/minicrawler.so"
 ```
 
-## Building php-minicralwer container
+## Building php-minicrawler container
 
 ```shell
 docker buildx bake --file docker-bake.hcl php-minicrawler --print # show what will be build

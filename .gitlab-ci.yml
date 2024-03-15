@@ -17,9 +17,9 @@ Build Docker Container:
   script: >
     docker buildx bake --file docker-bake.hcl php-minicrawler --print
 
-  after_script: >
-    docker buildx prune
-    docker buildx du
+  after_script:
+    - docker buildx prune
+    - docker buildx du
 
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

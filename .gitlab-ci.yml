@@ -32,7 +32,7 @@ Build php-minicrawler:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
-        - "*.{c,h,xml,php,yml}"
+        - "*.{c,h,xml,php}"
         - Dockerfile
       when: always
     - when: manual

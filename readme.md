@@ -29,7 +29,6 @@ extension="/usr/local/opt/php-minicrawler/modules/minicrawler.so"
 ## Building php-minicralwer container
 
 ```shell
-SOURCE_COMMIT=$(git rev-parse --short HEAD) \
 docker buildx bake --file docker-bake.hcl php-minicrawler --print # show what will be build
 ```
 
@@ -41,8 +40,8 @@ docker buildx bake \
 	--set php-minicrawler.tags.COMMIT="dr.brzy.cz/testomato/php-minicrawler:$(git rev-parse --short HEAD)" \
 	--set php-minicrawler.tags.COMMIT="dr.brzy.cz/testomato/php-minicrawler:v5.2.6" \
 	--set php-minicrawler.tags.COMMIT="dr.brzy.cz/testomato/php-minicrawler:latest" \
-	--print
-	# --push
+	--print \
+	--push
 ```
 
 ## Try PHP minicrawler
@@ -52,9 +51,6 @@ First you need pull minicrawler image:
 ```shell
 docker pull dr.brzy.cz/testomato/php-minicrawler:latest
 
-# or Debian bookworm
-docker pull dr.brzy.cz/testomato/php-minicrawler:bokworm
-
 # or specific minicrawler version
 docker pull dr.brzy.cz/testomato/php-minicrawler:v5.2.6
 ```
@@ -62,7 +58,8 @@ docker pull dr.brzy.cz/testomato/php-minicrawler:v5.2.6
 then run it
 
 ```shell
-docker run -it dr.brzy.cz/testomato/php-minicrawler:bookworm /bin/bash
+docker pull dr.brzy.cz/testomato/php-minicrawler:latest
+docker run -it dr.brzy.cz/testomato/php-minicrawler:latest /bin/bash
 ```
 
 Inside container run `./minicrawler5`

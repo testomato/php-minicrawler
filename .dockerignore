@@ -1,0 +1,17 @@
+**/.git
+**/.DS_Store
+**/.idea
+**/.gitlab-ci.yml
+**/.gitignore
+
+# Docker
+/.dockerignore
+/Dockerfile
+/docker-*.*
+/docker
+
+# Files
+/readme.md
+
+# Empty folders
+!/**/.gitkeep

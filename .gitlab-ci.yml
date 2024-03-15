@@ -12,7 +12,7 @@ Cleanup docker cache:
       when: manual
   allow_failure: true
 
-Build php-minicrawler container:
+Build php-minicrawler:
   stage: Build
   tags: [ shell ]
 
@@ -32,6 +32,6 @@ Build php-minicrawler container:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
-        - /*.{c,h,xml,php,yml}
-        - /Dockerfile
+        - "*.{c,h,xml,php,yml}"
+        - Dockerfile
       when: always

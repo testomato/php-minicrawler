@@ -11,7 +11,8 @@ target "php-minicrawler" {
   platforms  = ["linux/amd64", "linux/arm64"]
   pull       = true
   tags       = [
-    "dr.brzy.cz/testomato/php-minicralwer:latest"
+    "dr.brzy.cz/testomato/php-minicralwer:latest",
+    "dr.brzy.cz/testomato/php-minicralwer:v5.2.6"
   ]
 }
 

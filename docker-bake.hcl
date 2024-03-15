@@ -5,7 +5,7 @@
 # docker buildx bake --file docker-bake.hcl php-minicralwer --push --no-cache --progress=plain
 ####################################################################################################
 
-target "php-minicralwer" {
+target "php-minicrawler" {
   context    = "."
   dockerfile = "Dockerfile"
   platforms  = ["linux/amd64", "linux/arm64"]
@@ -20,5 +20,5 @@ target "php-minicralwer" {
 ####################################################################################################
 
 group "default" {
-  targets = ["php-minicralwer"]
+  targets = ["php-minicrawler"]
 }

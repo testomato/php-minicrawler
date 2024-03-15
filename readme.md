@@ -29,7 +29,20 @@ extension="/usr/local/opt/php-minicrawler/modules/minicrawler.so"
 ## Building php-minicralwer container
 
 ```shell
-docker buildx bake php-minicrawler --no-cache --push
+SOURCE_COMMIT=$(git rev-parse --short HEAD) \
+docker buildx bake --file docker-bake.hcl php-minicrawler --print # show what will be build
+```
+
+How to add other tags:
+
+```shell
+docker buildx bake \
+	--file docker-bake.hcl\
+	--set php-minicrawler.tags.COMMIT="dr.brzy.cz/testomato/php-minicralwer:$(git rev-parse --short HEAD)" \
+	--set php-minicrawler.tags.COMMIT="dr.brzy.cz/testomato/php-minicralwer:v5.2.6" \
+	--set php-minicrawler.tags.COMMIT="dr.brzy.cz/testomato/php-minicralwer:latest" \
+	--print
+	# --push
 ```
 
 ## Try PHP minicrawler

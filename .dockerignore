@@ -8,7 +8,6 @@
 /.dockerignore
 /Dockerfile
 /docker-*.*
-/docker
 
 # Files
 /readme.md

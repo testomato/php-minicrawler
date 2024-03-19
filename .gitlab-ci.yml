@@ -26,7 +26,10 @@ Build php-minicrawler container:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
-        - "*.{c,h,xml,php}"
-        - .docker/Dockerfile
+        - "*.c"
+        - "*.h"
+        - "*.xml"
+        - "*.php"
+        - ".docker/Dockerfile"
       when: always
     - when: manual

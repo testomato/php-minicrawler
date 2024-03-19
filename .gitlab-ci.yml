@@ -31,5 +31,3 @@ Build php-minicrawler container:
         - "*.xml"
         - "*.php"
         - ".docker/Dockerfile"
-      when: always
-    - when: manual

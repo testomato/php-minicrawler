@@ -60,17 +60,46 @@ then run it
 ```shell
 docker pull dr.brzy.cz/testomato/php-minicrawler:latest
 docker run -it --rm dr.brzy.cz/testomato/php-minicrawler:latest /bin/bash
-
-# install extension inside container
-cp /var/lib/php-minicrawler/etc/php/5.6/mods-available/minicrawler.ini /etc/php/5.6/mods-available
-mkdir -p /usr/lib/php/20131226
-cp /var/lib/php-minicrawler/usr/lib/php/20131226/minicrawler.so /usr/lib/php/20131226
-phpenmod minicrawler
 ```
 
 Inside container run `./minicrawler5`
 
-## Install minicrawler to your image
+## Test & Development
+
+```shell
+docker pull dr.brzy.cz/testomato/php-minicrawler:latest
+docker run -it --volume .:/php-minicrawler --rm dr.brzy.cz/testomato/php-minicrawler:latest /bin/bash
+````
+
+Inside container run:
+
+```shell
+phpize
+./configure
+make INSTALL_ROOT="/var/lib/php-minicrawler"
+
+# install minicrawler.so
+install -v modules/*.so $(php-config --extension-dir)
+
+# install minicrawler.ini
+install -v /minicrawler.ini /etc/php/5.6/mods-available
+
+# enable minicrawler
+phpenmod minicrawler
+```
+
+After that you can run `php -m | grep minicrawler` to see if minicrawler is enabled.
+Then you can run tests:
+
+```shell
+# disable sending emails to QA team
+export NO_INTERACTION=1;
+
+# then run tsts
+make test
+```
+
+## Install minicrawler into your image
 
 ```dockerfile
 COPY --from=dr.brzy.cz/testomato/php-minicrawler:latest /var/lib/php-minicrawler/usr /usr

@@ -60,6 +60,12 @@ then run it
 ```shell
 docker pull dr.brzy.cz/testomato/php-minicrawler:latest
 docker run -it --rm dr.brzy.cz/testomato/php-minicrawler:latest /bin/bash
+
+# install extension inside container
+cp /var/lib/php-minicrawler/etc/php/5.6/mods-available/minicrawler.ini /etc/php/5.6/mods-available
+mkdir -p /usr/lib/php/20131226
+cp /var/lib/php-minicrawler/usr/lib/php/20131226/minicrawler.so /usr/lib/php/20131226
+phpenmod minicrawler
 ```
 
 Inside container run `./minicrawler5`

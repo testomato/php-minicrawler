@@ -1,5 +1,6 @@
 Cleanup docker cache:
   tags: [ shell ]
+  stage: Docker
   script:
     - docker buildx prune --force
   rules:
@@ -9,7 +10,7 @@ Cleanup docker cache:
 
 Build php-minicrawler container:
   tags: [ shell ]
-
+  stage: Docker
   before_script: >
     if ! docker context inspect builder > /dev/null 2>&1; then
       docker context create builder

@@ -7,7 +7,7 @@
 
 target "php-minicrawler" {
   context    = "."
-  dockerfile = "Dockerfile"
+  dockerfile = ".docker/Dockerfile"
   platforms  = ["linux/amd64", "linux/arm64"]
   pull       = true
   tags       = [

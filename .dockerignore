@@ -5,8 +5,8 @@
 **/.gitignore
 
 # Docker
+/.docker
 /.dockerignore
-/Dockerfile
 /docker-*.*
 
 # Files

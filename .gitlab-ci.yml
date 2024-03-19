@@ -1,16 +1,6 @@
 stages:
   - Docker
 
-Cleanup docker cache:
-  tags: [ shell ]
-  stage: Docker
-  script:
-    - docker buildx prune --force
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      when: manual
-  allow_failure: true
-
 Build php-minicrawler container:
   tags: [ shell ]
   stage: Docker
@@ -39,3 +29,13 @@ Build php-minicrawler container:
 
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: manual
+
+Cleanup docker cache:
+  tags: [ shell ]
+  stage: Docker
+  script:
+    - docker buildx prune --force
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
+  allow_failure: true

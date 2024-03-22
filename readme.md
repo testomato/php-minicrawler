@@ -29,7 +29,7 @@ extension="/usr/local/opt/php-minicrawler/modules/minicrawler.so"
 ## Building php-minicrawler container
 
 ```shell
-docker buildx bake --file docker-bake.hcl php-minicrawler --print # show what will be build
+docker buildx bake --file docker-bake.hcl php-minicrawler --push # --no-cache --print
 ```
 
 How to add other tags:
@@ -40,22 +40,12 @@ docker buildx bake \
   --set php-minicrawler.tags.COMMIT="dr.brzy.cz/testomato/php-minicrawler:$(git rev-parse --short HEAD)" \
   --set php-minicrawler.tags.COMMIT="dr.brzy.cz/testomato/php-minicrawler:v5.2.6" \
   --set php-minicrawler.tags.COMMIT="dr.brzy.cz/testomato/php-minicrawler:latest" \
-  --print \
   --push
 ```
 
 ## Try PHP minicrawler
 
-First you need pull minicrawler image:
-
-```shell
-docker pull dr.brzy.cz/testomato/php-minicrawler:latest
-
-# or specific minicrawler version
-docker pull dr.brzy.cz/testomato/php-minicrawler:v5.2.6
-```
-
-then run it
+Pull latest image and run it:
 
 ```shell
 docker pull dr.brzy.cz/testomato/php-minicrawler:latest
@@ -67,8 +57,8 @@ Inside container run `./minicrawler5`
 ## Test & Development
 
 ```shell
-docker pull dr.brzy.cz/testomato/php-minicrawler:latest
-docker run -it --volume .:/php-minicrawler --rm dr.brzy.cz/testomato/php-minicrawler:latest /bin/bash
+docker compose build php-minicrawler
+docker compose run --rm php-minicrawler /bin/bash
 ````
 
 Inside container run:

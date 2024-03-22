@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM debian:bookworm-slim as php-minicrawler-builder
 
 ENV LANGUAGE en_US.UTF-8
 ENV LANG en_US.UTF-8
@@ -73,3 +73,9 @@ RUN phpize || exit 40 \
 	&& install -v modules/*.so /var/lib/php-minicrawler$(php-config --extension-dir) || exit 43 \
 	&& mkdir -p /var/lib/php-minicrawler/etc/php/5.6/mods-available \
 	&& install -v /minicrawler.ini /var/lib/php-minicrawler/etc/php/5.6/mods-available || exit 44
+
+# Final image with PHP minicrawler extension
+FROM debian:bookworm-slim as php-minicrawler
+ENV DEBIAN_FRONTEND noninteractive
+COPY --from=php-minicrawler-builder /var/lib/php-minicrawler/usr /var/lib/php-minicrawler/usr
+COPY --from=php-minicrawler-builder /var/lib/php-minicrawler/etc /var/lib/php-minicrawler/etc

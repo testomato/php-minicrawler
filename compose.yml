@@ -1,0 +1,14 @@
+name: php-minicrawler
+
+services:
+
+  # docker compose build php-minicrawler
+  # docker compose run --rm php-minicrawler /bin/bash
+  php-minicrawler:
+    tty: true
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+      target: php-minicrawler-builder
+    volumes:
+      - ".:/php-minicrawler"

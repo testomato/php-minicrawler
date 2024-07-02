@@ -8,6 +8,7 @@
 /.docker
 /.dockerignore
 /docker-*.*
+/docker-bake.override.hcl
 
 # Files
 /readme.md

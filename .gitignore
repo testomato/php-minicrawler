@@ -20,10 +20,12 @@
 /config.h.in
 /configure
 /configure.in
+/configure.ac
 /install-sh
 /libtool
 /ltmain.sh
 /missing
+/minicrawler.dep
 /mkinstalldirs
 run-tests.php
 

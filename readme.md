@@ -52,13 +52,28 @@ docker pull dr.brzy.cz/testomato/php-minicrawler:latest
 docker run -it --rm dr.brzy.cz/testomato/php-minicrawler:latest /bin/bash
 ```
 
-Inside container run `./minicrawler5`
+then you can try to install minicrawler locally inside container:
+
+```shell
+apt update && apt install -qy php-8.2
+cp -r /var/lib/php-minicrawler/usr /
+cp -r /var/lib/php-minicrawler/etc /
+phpenmod minicrawler
+```
+
+then run interactive php shell:
+
+```shell
+php -a
+```
+
+and try 
 
 ## Test & Development
 
 ```shell
-docker compose build php-minicrawler
-docker compose run --rm php-minicrawler /bin/bash
+docker compose build php-minicrawler-dev
+docker compose run --rm php-minicrawler-dev /bin/bash
 ````
 
 Inside container run:
@@ -72,7 +87,7 @@ make INSTALL_ROOT="/var/lib/php-minicrawler"
 install -v modules/*.so $(php-config --extension-dir)
 
 # install minicrawler.ini
-install -v /minicrawler.ini /etc/php/5.6/mods-available
+install -v /minicrawler.ini /etc/php/8.2/mods-available
 
 # enable minicrawler
 phpenmod minicrawler

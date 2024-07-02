@@ -9,48 +9,167 @@ int le_mcrawler_url;
 int le_mcrawler_settings;
 int le_mcrawler_url_url;
 
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_init_url, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_init_settings, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_close_url, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_close_settings, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_timeout, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_delay, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_set_useragent, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_set_headers, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_add_headers, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_set_credentials, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_set_postdata, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_set_options, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_set_option, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_set_cookies, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_add_cookies, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_go, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_reset, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_index, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_state, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_status, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_url, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_method, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_request, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_redirected_to, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_redirect_info, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_header, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_body, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_response_size, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_options, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_timing, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_cookies, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_content_type, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_charset, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_www_authenticate, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_error_msg, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_serialize, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_unserialize, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_version, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_parse_url, 0)
+ZEND_END_ARG_INFO()
+
+
 static zend_function_entry minicrawler_functions[] = {
-    PHP_FE(mcrawler_init_url, NULL)
-    PHP_FE(mcrawler_init_settings, NULL)
-    PHP_FE(mcrawler_close_url, NULL)
-    PHP_FE(mcrawler_close_settings, NULL)
-    PHP_FE(mcrawler_get_timeout, NULL)
-    PHP_FE(mcrawler_get_delay, NULL)
-    PHP_FE(mcrawler_set_useragent, NULL)
-    PHP_FE(mcrawler_set_headers, NULL)
-    PHP_FE(mcrawler_add_headers, NULL)
-    PHP_FE(mcrawler_set_credentials, NULL)
-    PHP_FE(mcrawler_set_postdata, NULL)
-    PHP_FE(mcrawler_set_options, NULL)
-    PHP_FE(mcrawler_set_option, NULL)
-    PHP_FE(mcrawler_set_cookies, NULL)
-    PHP_FE(mcrawler_add_cookies, NULL)
-    PHP_FE(mcrawler_go, NULL)
-    PHP_FE(mcrawler_reset, NULL)
-    PHP_FE(mcrawler_get_index, NULL)
-    PHP_FE(mcrawler_get_state, NULL)
-    PHP_FE(mcrawler_get_status, NULL)
-    PHP_FE(mcrawler_get_url, NULL)
-    PHP_FE(mcrawler_get_method, NULL)
-    PHP_FE(mcrawler_get_request, NULL)
-    PHP_FE(mcrawler_get_redirected_to, NULL)
-    PHP_FE(mcrawler_get_redirect_info, NULL)
-    PHP_FE(mcrawler_get_header, NULL)
-    PHP_FE(mcrawler_get_body, NULL)
-    PHP_FE(mcrawler_get_response_size, NULL)
-    PHP_FE(mcrawler_get_options, NULL)
-    PHP_FE(mcrawler_get_timing, NULL)
-    PHP_FE(mcrawler_get_cookies, NULL)
-    PHP_FE(mcrawler_get_content_type, NULL)
-    PHP_FE(mcrawler_get_charset, NULL)
-    PHP_FE(mcrawler_get_www_authenticate, NULL)
-    PHP_FE(mcrawler_get_error_msg, NULL)
-    PHP_FE(mcrawler_serialize, NULL)
-    PHP_FE(mcrawler_unserialize, NULL)
-    PHP_FE(mcrawler_version, NULL)
-    PHP_FE(mcrawler_parse_url, NULL)
+    PHP_FE(mcrawler_init_url, arginfo_mcrawler_init_url)
+    PHP_FE(mcrawler_init_settings, arginfo_mcrawler_init_settings)
+    PHP_FE(mcrawler_close_url, arginfo_mcrawler_close_url)
+    PHP_FE(mcrawler_close_settings, arginfo_mcrawler_close_settings)
+    PHP_FE(mcrawler_get_timeout, arginfo_mcrawler_get_timeout)
+    PHP_FE(mcrawler_get_delay, arginfo_mcrawler_get_delay)
+    PHP_FE(mcrawler_set_useragent, arginfo_mcrawler_set_useragent)
+    PHP_FE(mcrawler_set_headers, arginfo_mcrawler_set_headers)
+    PHP_FE(mcrawler_add_headers, arginfo_mcrawler_add_headers)
+    PHP_FE(mcrawler_set_credentials, arginfo_mcrawler_set_credentials)
+    PHP_FE(mcrawler_set_postdata, arginfo_mcrawler_set_postdata)
+    PHP_FE(mcrawler_set_options, arginfo_mcrawler_set_options)
+    PHP_FE(mcrawler_set_option, arginfo_mcrawler_set_option)
+    PHP_FE(mcrawler_set_cookies, arginfo_mcrawler_set_cookies)
+    PHP_FE(mcrawler_add_cookies, arginfo_mcrawler_add_cookies)
+    PHP_FE(mcrawler_go, arginfo_mcrawler_go)
+    PHP_FE(mcrawler_reset, arginfo_mcrawler_reset)
+    PHP_FE(mcrawler_get_index, arginfo_mcrawler_get_index)
+    PHP_FE(mcrawler_get_state, arginfo_mcrawler_get_state)
+    PHP_FE(mcrawler_get_status, arginfo_mcrawler_get_status)
+    PHP_FE(mcrawler_get_url, arginfo_mcrawler_get_url)
+    PHP_FE(mcrawler_get_method, arginfo_mcrawler_get_method)
+    PHP_FE(mcrawler_get_request, arginfo_mcrawler_get_request)
+    PHP_FE(mcrawler_get_redirected_to, arginfo_mcrawler_get_redirected_to)
+    PHP_FE(mcrawler_get_redirect_info, arginfo_mcrawler_get_redirect_info)
+    PHP_FE(mcrawler_get_header, arginfo_mcrawler_get_header)
+    PHP_FE(mcrawler_get_body, arginfo_mcrawler_get_body)
+    PHP_FE(mcrawler_get_response_size, arginfo_mcrawler_get_response_size)
+    PHP_FE(mcrawler_get_options, arginfo_mcrawler_get_options)
+    PHP_FE(mcrawler_get_timing, arginfo_mcrawler_get_timing)
+    PHP_FE(mcrawler_get_cookies, arginfo_mcrawler_get_cookies)
+    PHP_FE(mcrawler_get_content_type, arginfo_mcrawler_get_content_type)
+    PHP_FE(mcrawler_get_charset, arginfo_mcrawler_get_charset)
+    PHP_FE(mcrawler_get_www_authenticate, arginfo_mcrawler_get_www_authenticate)
+    PHP_FE(mcrawler_get_error_msg, arginfo_mcrawler_get_error_msg)
+    PHP_FE(mcrawler_serialize, arginfo_mcrawler_serialize)
+    PHP_FE(mcrawler_unserialize, arginfo_mcrawler_unserialize)
+    PHP_FE(mcrawler_version, arginfo_mcrawler_version)
+    PHP_FE(mcrawler_parse_url, arginfo_mcrawler_parse_url)
     PHP_FE_END
 };
+
 
 zend_module_entry minicrawler_module_entry = {
     STANDARD_MODULE_HEADER,
@@ -71,7 +190,7 @@ static zend_class_entry *php_mcrawler_exception_ce, *php_mcrawler_url_exception_
 ZEND_GET_MODULE(minicrawler)
 #endif
 
-static void mcrawler_url_dtor(zend_resource *rsrc TSRMLS_DC)
+static void mcrawler_url_dtor(zend_resource *rsrc)
 {
 	mcrawler_url *url = (mcrawler_url *)rsrc->ptr;
 	if (url) {
@@ -81,7 +200,7 @@ static void mcrawler_url_dtor(zend_resource *rsrc TSRMLS_DC)
 	}
 }
 
-static void mcrawler_settings_dtor(zend_resource *rsrc TSRMLS_DC)
+static void mcrawler_settings_dtor(zend_resource *rsrc)
 {
 	mcrawler_settings *settings = (mcrawler_settings *)rsrc->ptr;
 	if (settings) {
@@ -89,7 +208,7 @@ static void mcrawler_settings_dtor(zend_resource *rsrc TSRMLS_DC)
 	}
 }
 
-static void mcrawler_url_url_dtor(zend_resource *rsrc TSRMLS_DC)
+static void mcrawler_url_url_dtor(zend_resource *rsrc)
 {
 	mcrawler_url_url *url = (mcrawler_url_url *)rsrc->ptr;
 	if (url) {
@@ -156,17 +275,16 @@ PHP_MINIT_FUNCTION(minicrawler)
 	INIT_CLASS_ENTRY(ce, "McrawlerException", NULL);
 	INIT_CLASS_ENTRY(ce_url, "McrawlerUrlException", NULL);
 
-	php_mcrawler_exception_ce = zend_register_internal_class_ex(&ce, zend_exception_get_default(TSRMLS_CC) TSRMLS_CC);
-	php_mcrawler_url_exception_ce = zend_register_internal_class_ex(&ce_url, zend_exception_get_default(TSRMLS_CC) TSRMLS_CC);
+	php_mcrawler_exception_ce = zend_register_internal_class_ex(&ce, zend_exception_get_default());
+   php_mcrawler_url_exception_ce = zend_register_internal_class_ex(&ce_url, zend_exception_get_default());
 
 	return SUCCESS;
 }
 
-static void php_minicrawler_register_url(mcrawler_url *url, zval *zurl TSRMLS_DC) {
+static void php_minicrawler_register_url(mcrawler_url *url, zval *zurl) {
 	php_mcrawler_ctx *ctx;
 
 	ctx = (php_mcrawler_ctx *)emalloc(sizeof(php_mcrawler_ctx));
-	TSRMLS_SET_CTX(ctx->thread_ctx);
 	url->userdata = ctx;
 
 	ZVAL_RES(zurl, zend_register_resource(url, le_mcrawler_url));
@@ -179,7 +297,7 @@ PHP_FUNCTION(mcrawler_init_url)
 	char *url_s, *method_s = NULL;
 	int url_len, method_len = 0;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|s", &url_s, &url_len, &method_s, &method_len) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s|s", &url_s, &url_len, &method_s, &method_len) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -192,7 +310,7 @@ PHP_FUNCTION(mcrawler_init_url)
 		strcpy(url->method, "GET");
 	}
 
-	php_minicrawler_register_url(url, return_value TSRMLS_CC);
+	php_minicrawler_register_url(url, return_value);
 }
 
 PHP_FUNCTION(mcrawler_close_url)
@@ -212,7 +330,7 @@ PHP_FUNCTION(mcrawler_init_settings)
 	mcrawler_settings *settings;
 	long timeout = 5, delay = 100;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|ll", &timeout, &delay) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "|ll", &timeout, &delay) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -241,7 +359,7 @@ PHP_FUNCTION(mcrawler_get_timeout)
 	mcrawler_settings *settings;
 	zval *zsettings;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zsettings) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zsettings) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -257,7 +375,7 @@ PHP_FUNCTION(mcrawler_get_delay)
 	mcrawler_settings *settings;
 	zval *zsettings;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zsettings) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zsettings) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -303,7 +421,7 @@ PHP_FUNCTION(mcrawler_set_headers)
 	}
 
 	if (ZSTR_LEN(headers) > sizeof(url->customheader)-1) {
-		php_error_docref(NULL TSRMLS_CC, E_ERROR, "Custom HTTP headers are too long.");
+		php_error_docref(NULL, E_ERROR, "Custom HTTP headers are too long.");
 		RETURN_FALSE;
 	}
 	strncpy(url->customheader, ZSTR_VAL(headers), ZSTR_LEN(headers));
@@ -327,7 +445,7 @@ PHP_FUNCTION(mcrawler_add_headers)
 
 	size_t offset = strlen(url->customheader);
 	if (offset + ZSTR_LEN(headers) > sizeof(url->customheader)-1) {
-		php_error_docref(NULL TSRMLS_CC, E_ERROR, "Custom HTTP headers are too long.");
+		php_error_docref(NULL, E_ERROR, "Custom HTTP headers are too long.");
 		RETURN_FALSE;
 	}
 	strncpy(url->customheader + offset, ZSTR_VAL(headers), ZSTR_LEN(headers));
@@ -491,7 +609,6 @@ struct fcall {
 static void callback(mcrawler_url* url, void *arg) {
 	struct fcall *fc = (struct fcall *)arg;
 	php_mcrawler_ctx *ctx = (php_mcrawler_ctx *)url->userdata;
-	TSRMLS_FETCH_FROM_CTX(ctx->thread_ctx);
 
 	zval args[1];
 	zval retval;
@@ -503,7 +620,7 @@ static void callback(mcrawler_url* url, void *arg) {
 	fc->info.param_count = 1;
 	fc->info.params = args;
 
-	if (zend_call_function(&fc->info, &fc->info_cache TSRMLS_CC) == SUCCESS) {
+	if (zend_call_function(&fc->info, &fc->info_cache) == SUCCESS) {
 		zval_ptr_dtor(&retval);
 	}
 	zval_ptr_dtor(&args[0]);
@@ -518,7 +635,7 @@ PHP_FUNCTION(mcrawler_go)
 	fc.info = empty_fcall_info;
 	fc.info_cache = empty_fcall_info_cache;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ar|f", &zurls, &zsettings, &fc.info, &fc.info_cache) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "ar|f", &zurls, &zsettings, &fc.info, &fc.info_cache) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -556,7 +673,7 @@ PHP_FUNCTION(mcrawler_reset)
 	mcrawler_url *url;
 	zval *zurl;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -572,7 +689,7 @@ PHP_FUNCTION(mcrawler_get_index)
 	mcrawler_url *url;
 	zval *zurl;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -588,7 +705,7 @@ PHP_FUNCTION(mcrawler_get_state)
 	mcrawler_url *url;
 	zval *zurl;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -604,7 +721,7 @@ PHP_FUNCTION(mcrawler_get_status)
 	mcrawler_url *url;
 	zval *zurl;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -620,7 +737,7 @@ PHP_FUNCTION(mcrawler_get_url)
 	mcrawler_url *url;
 	zval *zurl;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -636,7 +753,7 @@ PHP_FUNCTION(mcrawler_get_method)
 	mcrawler_url *url;
 	zval *zurl;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -652,7 +769,7 @@ PHP_FUNCTION(mcrawler_get_request)
 	mcrawler_url *url;
 	zval *zurl;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -672,7 +789,7 @@ PHP_FUNCTION(mcrawler_get_redirected_to)
 	mcrawler_url *url;
 	zval *zurl;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -692,7 +809,7 @@ PHP_FUNCTION(mcrawler_get_redirect_info)
 	mcrawler_url *url;
 	zval *zurl;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -737,7 +854,7 @@ PHP_FUNCTION(mcrawler_get_header)
 	mcrawler_url *url;
 	zval *zurl;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -758,7 +875,7 @@ PHP_FUNCTION(mcrawler_get_body)
 	mcrawler_url *url;
 	zval *zurl;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -779,7 +896,7 @@ PHP_FUNCTION(mcrawler_get_response_size)
 	mcrawler_url *url;
 	zval *zurl;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -801,7 +918,7 @@ PHP_FUNCTION(mcrawler_get_options)
 	mcrawler_url *url;
 	zval *zurl;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -817,7 +934,7 @@ PHP_FUNCTION(mcrawler_get_timing)
 	mcrawler_url *url;
 	zval *zurl;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -833,7 +950,7 @@ PHP_FUNCTION(mcrawler_get_cookies)
 	mcrawler_url *url;
 	zval *zurl;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -873,7 +990,7 @@ PHP_FUNCTION(mcrawler_get_content_type)
 	mcrawler_url *url;
 	zval *zurl;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -893,7 +1010,7 @@ PHP_FUNCTION(mcrawler_get_charset)
 	mcrawler_url *url;
 	zval *zurl;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -913,7 +1030,7 @@ PHP_FUNCTION(mcrawler_get_www_authenticate)
 	mcrawler_url *url;
 	zval *zurl;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -933,7 +1050,7 @@ PHP_FUNCTION(mcrawler_get_error_msg)
 	mcrawler_url *url;
 	zval *zurl;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zurl) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -949,7 +1066,7 @@ PHP_FUNCTION(mcrawler_serialize)
 	mcrawler_settings *settings;
 	zval *zurls, *zsettings, *zurl;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ar", &zurls, &zsettings) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "ar", &zurls, &zsettings) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -997,7 +1114,7 @@ PHP_FUNCTION(mcrawler_unserialize)
 	char *buf;
 	int buf_sz;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &buf, &buf_sz) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &buf, &buf_sz) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -1010,7 +1127,7 @@ PHP_FUNCTION(mcrawler_unserialize)
 	array_init(&zurls);
 
 	for (int i = 0; urls[i]; i++) {
-		php_minicrawler_register_url(urls[i], &zurl TSRMLS_CC);
+		php_minicrawler_register_url(urls[i], &zurl);
 		add_index_zval(&zurls, urls[i]->index, &zurl);
 	}
 
@@ -1111,7 +1228,7 @@ PHP_FUNCTION(mcrawler_parse_url)
 				break;
 			case IS_STRING:
 				if (mcrawler_url_parse(&base_url, Z_STRVAL_P(zbase_url), NULL) == MCRAWLER_URL_FAILURE) {
-					zend_throw_exception_ex(php_mcrawler_url_exception_ce, 0 TSRMLS_CC, "Invalid base URL");
+					zend_throw_exception_ex(php_mcrawler_url_exception_ce, 0, "Invalid base URL");
 					RETURN_FALSE;
 				}
 				p_base_url = &base_url;
@@ -1122,7 +1239,7 @@ PHP_FUNCTION(mcrawler_parse_url)
 				}
 				break;
 			default:
-				php_error_docref(NULL TSRMLS_CC, E_ERROR, "Invalid type for base URL, only string or resource allowed.");
+				php_error_docref(NULL, E_ERROR, "Invalid type for base URL, only string or resource allowed.");
 				RETURN_FALSE;
 		}
 	} else {
@@ -1134,7 +1251,7 @@ PHP_FUNCTION(mcrawler_parse_url)
 
 	if (mcrawler_url_parse2(url, ZSTR_VAL(input), p_base_url, &state) == MCRAWLER_URL_FAILURE) {
 		efree(url);
-		zend_throw_exception_ex(php_mcrawler_url_exception_ce, state TSRMLS_CC, "Invalid URL");
+		zend_throw_exception_ex(php_mcrawler_url_exception_ce, state, "Invalid URL");
 		RETURN_FALSE;
 	}
 

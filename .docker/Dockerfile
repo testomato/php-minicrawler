@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim as php-minicrawler-builder
+FROM debian:bookworm-slim as php-minicrawler-dev
 
 ENV LANGUAGE en_US.UTF-8
 ENV LANG en_US.UTF-8
@@ -40,11 +40,9 @@ RUN apt update && apt -qy install \
     	&& dpkg-reconfigure tzdata \
 		&& rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
-# Install php5.6-dev package
-RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg  \
-    && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list  \
-    && apt update \
-    && apt install -qy php5.6-dev
+# Install php8.2-dev package
+RUN apt update \
+    && apt install -qy php8.2-dev
 
 # ca-certificates update
 RUN sed -i 's/mozilla\/DST_Root_CA_X3.crt/!mozilla\/DST_Root_CA_X3.crt/g' /etc/ca-certificates.conf  \
@@ -66,16 +64,17 @@ RUN echo "extension=minicrawler.so" > /minicrawler.ini
 WORKDIR /php-minicrawler
 COPY . /php-minicrawler
 
+FROM php-minicrawler-dev as php-minicrawler-build
 RUN phpize || exit 40 \
 	&& ./configure || exit 41 \
 	&& make INSTALL_ROOT="/var/lib/php-minicrawler" || exit 42 \
 	&& mkdir -p /var/lib/php-minicrawler$(php-config --extension-dir) \
 	&& install -v modules/*.so /var/lib/php-minicrawler$(php-config --extension-dir) || exit 43 \
-	&& mkdir -p /var/lib/php-minicrawler/etc/php/5.6/mods-available \
-	&& install -v /minicrawler.ini /var/lib/php-minicrawler/etc/php/5.6/mods-available || exit 44
+	&& mkdir -p /var/lib/php-minicrawler/etc/php/8.2/mods-available \
+	&& install -v /minicrawler.ini /var/lib/php-minicrawler/etc/php/8.2/mods-available || exit 44
 
 # Final image with PHP minicrawler extension
 FROM debian:bookworm-slim as php-minicrawler
 ENV DEBIAN_FRONTEND noninteractive
-COPY --from=php-minicrawler-builder /var/lib/php-minicrawler/usr /var/lib/php-minicrawler/usr
-COPY --from=php-minicrawler-builder /var/lib/php-minicrawler/etc /var/lib/php-minicrawler/etc
+COPY --from=php-minicrawler-build /var/lib/php-minicrawler/usr /var/lib/php-minicrawler/usr
+COPY --from=php-minicrawler-build /var/lib/php-minicrawler/etc /var/lib/php-minicrawler/etc

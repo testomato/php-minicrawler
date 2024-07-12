@@ -137,16 +137,6 @@ function mcrawler_set_credentials($url, $username, $password) {
 function mcrawler_set_postdata($url, $postdata) {
 }
 
-
-/**
- * Sets the post data for a URL.
- *
- * @param resource $url The URL resource to set post data for.
- * @param string $postdata The post data.
- */
-function mcrawler_set_postdata($url, $postdata) {
-}
-
 /**
  * Sets options for a URL.
  *
@@ -154,6 +144,7 @@ function mcrawler_set_postdata($url, $postdata) {
  * @param int $options The options to set.
  */
 function mcrawler_set_options($url, $options) {
+
 }
 
 /**
@@ -398,4 +389,19 @@ function mcrawler_version() {
  * @return array Parsed URL components.
  */
 function mcrawler_parse_url($url, $base_url = null) {
+}
+
+
+/**
+ * Class McrawlerException
+ * Represents a general exception for mcrawler operations.
+ */
+class McrawlerException extends Exception {
+}
+
+/**
+ * Class McrawlerUrlException
+ * Represents an exception for URL processing in mcrawler.
+ */
+class McrawlerUrlException extends McrawlerException {
 }

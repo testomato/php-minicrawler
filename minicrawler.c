@@ -10,120 +10,174 @@ int le_mcrawler_settings;
 int le_mcrawler_url_url;
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_init_url, 0)
+ZEND_ARG_TYPE_INFO(0, url, IS_STRING, 0)
+ZEND_ARG_TYPE_INFO(0, method, IS_STRING, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_init_settings, 0)
+ZEND_ARG_TYPE_INFO(0, timeout, IS_LONG, 1)
+ZEND_ARG_TYPE_INFO(0, delay, IS_LONG, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_close_url, 0)
+ZEND_ARG_INFO(0, url)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_close_settings, 0)
+ZEND_ARG_INFO(0, settings)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_timeout, 0)
+ZEND_ARG_INFO(0, settings)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_delay, 0)
+ZEND_ARG_INFO(0, settings)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_set_useragent, 0)
+ZEND_ARG_INFO(0, url)
+ZEND_ARG_TYPE_INFO(0, useragent, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_set_headers, 0)
+ZEND_ARG_INFO(0, url)
+ZEND_ARG_TYPE_INFO(0, headers, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_add_headers, 0)
+ZEND_ARG_INFO(0, url)
+ZEND_ARG_TYPE_INFO(0, headers, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_set_credentials, 0)
+ZEND_ARG_INFO(0, url)
+ZEND_ARG_TYPE_INFO(0, username, IS_STRING, 0)
+ZEND_ARG_TYPE_INFO(0, password, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_set_postdata, 0)
+ZEND_ARG_INFO(0, url)
+ZEND_ARG_TYPE_INFO(0, postdata, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_set_options, 0)
+ZEND_ARG_INFO(0, url)
+ZEND_ARG_TYPE_INFO(0, options, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_set_option, 0)
+ZEND_ARG_INFO(0, url)
+ZEND_ARG_TYPE_INFO(0, option, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_set_cookies, 0)
+ZEND_ARG_INFO(0, url)
+ZEND_ARG_TYPE_INFO(0, cookies, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_add_cookies, 0)
+ZEND_ARG_INFO(0, url)
+ZEND_ARG_TYPE_INFO(0, cookies, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_go, 0)
+ZEND_ARG_TYPE_INFO(0, urls, IS_ARRAY, 0)
+ZEND_ARG_INFO(0, settings)
+ZEND_ARG_INFO(0, callback)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_reset, 0)
+ZEND_ARG_INFO(0, url)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_index, 0)
+ZEND_ARG_INFO(0, url)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_state, 0)
+ZEND_ARG_INFO(0, url)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_status, 0)
+ZEND_ARG_INFO(0, url)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_url, 0)
+ZEND_ARG_INFO(0, url)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_method, 0)
+ZEND_ARG_INFO(0, url)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_request, 0)
+ZEND_ARG_INFO(0, url)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_redirected_to, 0)
+ZEND_ARG_INFO(0, url)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_redirect_info, 0)
+ZEND_ARG_INFO(0, url)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_header, 0)
+ZEND_ARG_INFO(0, url)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_body, 0)
+ZEND_ARG_INFO(0, url)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_response_size, 0)
+ZEND_ARG_INFO(0, url)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_options, 0)
+ZEND_ARG_INFO(0, url)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_timing, 0)
+ZEND_ARG_INFO(0, url)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_cookies, 0)
+ZEND_ARG_INFO(0, url)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_content_type, 0)
+ZEND_ARG_INFO(0, url)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_charset, 0)
+ZEND_ARG_INFO(0, url)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_www_authenticate, 0)
+ZEND_ARG_INFO(0, url)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_error_msg, 0)
+ZEND_ARG_INFO(0, url)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_serialize, 0)
+ZEND_ARG_TYPE_INFO(0, urls, IS_ARRAY, 0)
+ZEND_ARG_INFO(0, settings)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_unserialize, 0)
+ZEND_ARG_TYPE_INFO(0, serialized_data, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_version, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_parse_url, 0)
+ZEND_ARG_TYPE_INFO(0, url, IS_STRING, 0)
+ZEND_ARG_INFO(0, base_url)
 ZEND_END_ARG_INFO()
 
 

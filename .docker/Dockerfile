@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim as php-minicrawler-dev
+FROM debian:bookworm-slim AS php-minicrawler-dev
 
 ENV LANGUAGE=en_US.UTF-8
 ENV LANG=en_US.UTF-8

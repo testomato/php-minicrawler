@@ -40,9 +40,11 @@ RUN apt update && apt -qy install \
     	&& dpkg-reconfigure tzdata \
 		&& rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
-# Install php8.2-dev package
-RUN apt update \
-    && apt install -qy php8.2-dev
+
+RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
+    && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list \
+    && apt update \
+    && apt install -qy php8.4-dev
 
 # ca-certificates update
 RUN sed -i 's/mozilla\/DST_Root_CA_X3.crt/!mozilla\/DST_Root_CA_X3.crt/g' /etc/ca-certificates.conf  \
@@ -70,8 +72,8 @@ RUN phpize || exit 40 \
 	&& make INSTALL_ROOT="/var/lib/php-minicrawler" || exit 42 \
 	&& mkdir -p /var/lib/php-minicrawler$(php-config --extension-dir) \
 	&& install -v modules/*.so /var/lib/php-minicrawler$(php-config --extension-dir) || exit 43 \
-	&& mkdir -p /var/lib/php-minicrawler/etc/php/8.2/mods-available \
-	&& install -v /minicrawler.ini /var/lib/php-minicrawler/etc/php/8.2/mods-available || exit 44
+	&& mkdir -p /var/lib/php-minicrawler/etc/php/8.4/mods-available \
+	&& install -v /minicrawler.ini /var/lib/php-minicrawler/etc/php/8.4/mods-available || exit 44
 
 # Final image with PHP minicrawler extension
 FROM debian:bookworm-slim as php-minicrawler

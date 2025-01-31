@@ -1,10 +1,10 @@
 FROM debian:bookworm-slim as php-minicrawler-dev
 
-ENV LANGUAGE en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LC_ALL C
-ENV DEBIAN_FRONTEND noninteractive
-ENV CFLAGS "-O3 -g -fstack-protector-strong"
+ENV LANGUAGE=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LC_ALL=C
+ENV DEBIAN_FRONTEND=noninteractive
+ENV CFLAGS="-O3 -g -fstack-protector-strong"
 
 RUN apt update && apt -qy install \
 	# minicrawler dev deps
@@ -40,10 +40,12 @@ RUN apt update && apt -qy install \
     	&& dpkg-reconfigure tzdata \
 		&& rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
-
-RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
-    && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list \
-    && apt update \
+RUN apt-get update \
+    && apt-get -y install lsb-release ca-certificates curl \
+    && curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb \
+    && dpkg -i /tmp/debsuryorg-archive-keyring.deb \
+    && sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list' \
+    && apt-get update \
     && apt install -qy php8.4-dev
 
 # ca-certificates update
@@ -59,14 +61,14 @@ RUN sed -i 's/mozilla\/DST_Root_CA_X3.crt/!mozilla\/DST_Root_CA_X3.crt/g' /etc/c
 COPY --from=dr.brzy.cz/testomato/minicrawler:latest /var/lib/minicrawler/usr /usr
 COPY --from=dr.brzy.cz/testomato/minicrawler:latest /var/lib/minicrawler /var/lib/minicrawler
 
-ENV LC_ALL en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
 
 RUN echo "extension=minicrawler.so" > /minicrawler.ini
 
 WORKDIR /php-minicrawler
 COPY . /php-minicrawler
 
-FROM php-minicrawler-dev as php-minicrawler-build
+FROM php-minicrawler-dev AS php-minicrawler-build
 RUN phpize || exit 40 \
 	&& ./configure || exit 41 \
 	&& make INSTALL_ROOT="/var/lib/php-minicrawler" || exit 42 \
@@ -76,7 +78,7 @@ RUN phpize || exit 40 \
 	&& install -v /minicrawler.ini /var/lib/php-minicrawler/etc/php/8.4/mods-available || exit 44
 
 # Final image with PHP minicrawler extension
-FROM debian:bookworm-slim as php-minicrawler
-ENV DEBIAN_FRONTEND noninteractive
+FROM debian:bookworm-slim AS php-minicrawler
+ENV DEBIAN_FRONTEND=noninteractive
 COPY --from=php-minicrawler-build /var/lib/php-minicrawler/usr /var/lib/php-minicrawler/usr
 COPY --from=php-minicrawler-build /var/lib/php-minicrawler/etc /var/lib/php-minicrawler/etc

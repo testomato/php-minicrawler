@@ -55,10 +55,21 @@ docker run -it --rm dr.brzy.cz/testomato/php-minicrawler:latest /bin/bash
 then you can try to install minicrawler locally inside container:
 
 ```shell
-apt update && apt install -qy php-8.4
+# install php 8.4
+# check https://packages.sury.org/php/README.txt for more info
+apt-get update
+apt-get -y install lsb-release ca-certificates curl
+curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
+dpkg -i /tmp/debsuryorg-archive-keyring.deb
+sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
+apt-get update
+apt install -qy php8.4-cli
+
+# install minicrawler
 cp -r /var/lib/php-minicrawler/usr /
 cp -r /var/lib/php-minicrawler/etc /
 phpenmod minicrawler
+
 ```
 
 then run interactive php shell:

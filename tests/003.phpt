@@ -14,7 +14,7 @@ echo mcrawler_get_method($resource) . PHP_EOL;
 $resource = mcrawler_init_url('http://www.google.com', "PUT");
 echo mcrawler_get_method($resource) . PHP_EOL;
 
-$resource = mcrawler_init_url('http://www.google.com', "DETELE");
+$resource = mcrawler_init_url('http://www.google.com', "DELETE");
 echo mcrawler_get_method($resource) . PHP_EOL;
 ?>
 --EXPECT--
@@ -22,4 +22,4 @@ GET
 GET
 POST
 PUT
-DETELE
+DELETE

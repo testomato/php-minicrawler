@@ -44,8 +44,7 @@ define('MCRAWLER_URL_PARSE_STATE_PORT', 12);
  * @param string|null $method The HTTP method to use.
  * @return resource The initialized URL resource.
  */
-function mcrawler_init_url($url, $method = null) {
-}
+function mcrawler_init_url(string $url, ?string $method = null) {}
 
 /**
  * Initializes new settings for the crawler.
@@ -54,24 +53,21 @@ function mcrawler_init_url($url, $method = null) {
  * @param int|null $delay The delay in milliseconds.
  * @return resource The initialized settings resource.
  */
-function mcrawler_init_settings($timeout = null, $delay = null) {
-}
+function mcrawler_init_settings(?int $timeout = null, ?int $delay = null) {}
 
 /**
  * Closes the specified URL resource.
  *
  * @param resource $url The URL resource to close.
  */
-function mcrawler_close_url($url) {
-}
+function mcrawler_close_url($url) {}
 
 /**
  * Closes the specified settings resource.
  *
  * @param resource $settings The settings resource to close.
  */
-function mcrawler_close_settings($settings) {
-}
+function mcrawler_close_settings($settings) {}
 
 /**
  * Retrieves the timeout from the specified settings.
@@ -79,8 +75,7 @@ function mcrawler_close_settings($settings) {
  * @param resource $settings The settings resource.
  * @return int The timeout value.
  */
-function mcrawler_get_timeout($settings) {
-}
+function mcrawler_get_timeout($settings): int {}
 
 /**
  * Retrieves the delay from the specified settings.
@@ -88,8 +83,7 @@ function mcrawler_get_timeout($settings) {
  * @param resource $settings The settings resource.
  * @return int The delay value.
  */
-function mcrawler_get_delay($settings) {
-}
+function mcrawler_get_delay($settings): int {}
 
 /**
  * Sets the user agent for the specified URL.
@@ -97,8 +91,7 @@ function mcrawler_get_delay($settings) {
  * @param resource $url The URL resource.
  * @param string $useragent The user agent string.
  */
-function mcrawler_set_useragent($url, $useragent) {
-}
+function mcrawler_set_useragent($url, string $useragent) {}
 
 /**
  * Sets headers for the specified URL.
@@ -106,8 +99,7 @@ function mcrawler_set_useragent($url, $useragent) {
  * @param resource $url The URL resource.
  * @param string $headers The headers string.
  */
-function mcrawler_set_headers($url, $headers) {
-}
+function mcrawler_set_headers($url, string $headers) {}
 
 /**
  * Adds headers to the specified URL.
@@ -115,8 +107,7 @@ function mcrawler_set_headers($url, $headers) {
  * @param resource $url The URL resource.
  * @param string $headers The headers string.
  */
-function mcrawler_add_headers($url, $headers) {
-}
+function mcrawler_add_headers($url, string $headers) {}
 
 /**
  * Sets credentials for the specified URL.
@@ -125,8 +116,7 @@ function mcrawler_add_headers($url, $headers) {
  * @param string $username The username.
  * @param string $password The password.
  */
-function mcrawler_set_credentials($url, $username, $password) {
-}
+function mcrawler_set_credentials($url, string $username, string $password) {}
 
 /**
  * Sets POST data for the specified URL.
@@ -134,8 +124,7 @@ function mcrawler_set_credentials($url, $username, $password) {
  * @param resource $url The URL resource.
  * @param string $postdata The POST data string.
  */
-function mcrawler_set_postdata($url, $postdata) {
-}
+function mcrawler_set_postdata($url, string $postdata) {}
 
 /**
  * Sets options for a URL.
@@ -143,9 +132,7 @@ function mcrawler_set_postdata($url, $postdata) {
  * @param resource $url The URL resource to set options for.
  * @param int $options The options to set.
  */
-function mcrawler_set_options($url, $options) {
-
-}
+function mcrawler_set_options($url, int $options) {}
 
 /**
  * Sets a single option for a URL.
@@ -153,8 +140,7 @@ function mcrawler_set_options($url, $options) {
  * @param resource $url The URL resource to set an option for.
  * @param int $option The option to set.
  */
-function mcrawler_set_option($url, $option) {
-}
+function mcrawler_set_option($url, int $option) {}
 
 /**
  * Sets cookies for a URL.
@@ -162,8 +148,7 @@ function mcrawler_set_option($url, $option) {
  * @param resource $url The URL resource to set cookies for.
  * @param string $cookies The cookies to set.
  */
-function mcrawler_set_cookies($url, $cookies) {
-}
+function mcrawler_set_cookies($url, string $cookies) {}
 
 /**
  * Adds cookies to a URL.
@@ -171,8 +156,7 @@ function mcrawler_set_cookies($url, $cookies) {
  * @param resource $url The URL resource to add cookies to.
  * @param string $cookies The cookies to add.
  */
-function mcrawler_add_cookies($url, $cookies) {
-}
+function mcrawler_add_cookies($url, string $cookies) {}
 
 /**
  * Initiates crawling for the given URLs with specified settings.
@@ -181,16 +165,14 @@ function mcrawler_add_cookies($url, $cookies) {
  * @param resource $settings The settings resource to use for crawling.
  * @param callable $callback The callback function to execute after crawling.
  */
-function mcrawler_go($urls, $settings, $callback) {
-}
+function mcrawler_go(array $urls, $settings, callable $callback) {}
 
 /**
  * Resets the state of a URL.
  *
  * @param resource $url The URL resource to reset.
  */
-function mcrawler_reset($url) {
-}
+function mcrawler_reset($url) {}
 
 /**
  * Retrieves the index of a URL.
@@ -198,8 +180,7 @@ function mcrawler_reset($url) {
  * @param resource $url The URL resource.
  * @return int The index of the URL.
  */
-function mcrawler_get_index($url) {
-}
+function mcrawler_get_index($url): int {}
 
 /**
  * Retrieves the last state of a URL.
@@ -207,8 +188,7 @@ function mcrawler_get_index($url) {
  * @param resource $url The URL resource.
  * @return int The last state of the URL.
  */
-function mcrawler_get_state($url) {
-}
+function mcrawler_get_state($url): int {}
 
 /**
  * Retrieves the status of a URL.
@@ -216,8 +196,7 @@ function mcrawler_get_state($url) {
  * @param resource $url The URL resource.
  * @return int The status of the URL.
  */
-function mcrawler_get_status($url) {
-}
+function mcrawler_get_status($url): int {}
 
 /**
  * Retrieves the raw URL string.
@@ -225,8 +204,7 @@ function mcrawler_get_status($url) {
  * @param resource $url The URL resource.
  * @return string The raw URL string.
  */
-function mcrawler_get_url($url) {
-}
+function mcrawler_get_url($url): string {}
 
 /**
  * Retrieves the method used for the URL request.
@@ -234,8 +212,7 @@ function mcrawler_get_url($url) {
  * @param resource $url The URL resource.
  * @return string The request method.
  */
-function mcrawler_get_method($url) {
-}
+function mcrawler_get_method($url): string {}
 
 /**
  * Get the request made to a URL.
@@ -243,8 +220,7 @@ function mcrawler_get_method($url) {
  * @param resource $url The URL resource.
  * @return string The request made to the URL.
  */
-function mcrawler_get_request($url) {
-}
+function mcrawler_get_request($url): string {}
 
 /**
  * Retrieves the URL to which a request was redirected.
@@ -252,8 +228,7 @@ function mcrawler_get_request($url) {
  * @param resource $url The URL resource.
  * @return string The URL to which the request was redirected.
  */
-function mcrawler_get_redirected_to($url) {
-}
+function mcrawler_get_redirected_to($url): string {}
 
 /**
  * Retrieves information about redirects.
@@ -261,8 +236,7 @@ function mcrawler_get_redirected_to($url) {
  * @param resource $url The URL resource.
  * @return array An array containing redirect information.
  */
-function mcrawler_get_redirect_info($url) {
-}
+function mcrawler_get_redirect_info($url): array {}
 
 /**
  * Retrieves the response header.
@@ -270,8 +244,7 @@ function mcrawler_get_redirect_info($url) {
  * @param resource $url The URL resource.
  * @return string The response header.
  */
-function mcrawler_get_header($url) {
-}
+function mcrawler_get_header($url): string {}
 
 /**
  * Retrieves the response body.
@@ -279,8 +252,7 @@ function mcrawler_get_header($url) {
  * @param resource $url The URL resource.
  * @return string The response body.
  */
-function mcrawler_get_body($url) {
-}
+function mcrawler_get_body($url): string {}
 
 /**
  * Get the response size of a URL.
@@ -288,8 +260,7 @@ function mcrawler_get_body($url) {
  * @param resource $url The URL resource.
  * @return int The response size.
  */
-function mcrawler_get_response_size($url) {
-}
+function mcrawler_get_response_size($url): int {}
 
 /**
  * Get the options set for a URL.
@@ -297,8 +268,7 @@ function mcrawler_get_response_size($url) {
  * @param resource $url The URL resource.
  * @return int The options.
  */
-function mcrawler_get_options($url) {
-}
+function mcrawler_get_options($url): int {}
 
 /**
  * Get timing information for a URL.
@@ -306,8 +276,7 @@ function mcrawler_get_options($url) {
  * @param resource $url The URL resource.
  * @return array The timing information.
  */
-function mcrawler_get_timing($url) {
-}
+function mcrawler_get_timing($url): array {}
 
 /**
  * Get cookies associated with a URL.
@@ -315,8 +284,7 @@ function mcrawler_get_timing($url) {
  * @param resource $url The URL resource.
  * @return string The cookies.
  */
-function mcrawler_get_cookies($url) {
-}
+function mcrawler_get_cookies($url): string {}
 
 /**
  * Get the content type of a URL's response.
@@ -324,8 +292,7 @@ function mcrawler_get_cookies($url) {
  * @param resource $url The URL resource.
  * @return string The content type.
  */
-function mcrawler_get_content_type($url) {
-}
+function mcrawler_get_content_type($url): string {}
 
 /**
  * Get the charset of a URL's response.
@@ -333,8 +300,7 @@ function mcrawler_get_content_type($url) {
  * @param resource $url The URL resource.
  * @return string The charset.
  */
-function mcrawler_get_charset($url) {
-}
+function mcrawler_get_charset($url): string {}
 
 /**
  * Get the WWW-Authenticate header of a URL's response.
@@ -342,8 +308,7 @@ function mcrawler_get_charset($url) {
  * @param resource $url The URL resource.
  * @return string The WWW-Authenticate header.
  */
-function mcrawler_get_www_authenticate($url) {
-}
+function mcrawler_get_www_authenticate($url): string {}
 
 /**
  * Get the error message associated with a URL's request.
@@ -351,8 +316,7 @@ function mcrawler_get_www_authenticate($url) {
  * @param resource $url The URL resource.
  * @return string The error message.
  */
-function mcrawler_get_error_msg($url) {
-}
+function mcrawler_get_error_msg($url): string {}
 
 /**
  * Serialize URL and settings objects.
@@ -361,8 +325,7 @@ function mcrawler_get_error_msg($url) {
  * @param resource $settings The settings resource.
  * @return string The serialized string.
  */
-function mcrawler_serialize($urls, $settings) {
-}
+function mcrawler_serialize(array $urls, $settings): string {}
 
 /**
  * Unserialize a string into URL and settings objects.
@@ -370,16 +333,14 @@ function mcrawler_serialize($urls, $settings) {
  * @param string $serialized_data The serialized string.
  * @return array An array containing the URLs and settings objects.
  */
-function mcrawler_unserialize($serialized_data) {
-}
+function mcrawler_unserialize(string $serialized_data): array {}
 
 /**
  * Get the version of the mcrawler library.
  *
  * @return string The version.
  */
-function mcrawler_version() {
-}
+function mcrawler_version(): string {}
 
 /**
  * Parse a URL and optionally resolve it against a base URL.
@@ -388,20 +349,16 @@ function mcrawler_version() {
  * @param string|null $base_url Optional base URL to resolve against.
  * @return array Parsed URL components.
  */
-function mcrawler_parse_url($url, $base_url = null) {
-}
-
+function mcrawler_parse_url(string $url, ?string $base_url = null): array {}
 
 /**
  * Class McrawlerException
  * Represents a general exception for mcrawler operations.
  */
-class McrawlerException extends Exception {
-}
+class McrawlerException extends Exception {}
 
 /**
  * Class McrawlerUrlException
  * Represents an exception for URL processing in mcrawler.
  */
-class McrawlerUrlException extends McrawlerException {
-}
+class McrawlerUrlException extends McrawlerException {}

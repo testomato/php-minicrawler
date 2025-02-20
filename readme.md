@@ -104,6 +104,8 @@ install -v /minicrawler.ini /etc/php/8.4/mods-available
 phpenmod minicrawler
 ```
 
+or just run `./rebuild` script inside container.
+
 After that you can run `php -m | grep minicrawler` to see if minicrawler is enabled.
 Then you can run tests:
 

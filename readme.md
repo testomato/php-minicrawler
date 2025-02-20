@@ -111,7 +111,7 @@ Then you can run tests:
 # disable sending emails to QA team
 export NO_INTERACTION=1;
 
-# then run tsts
+# then run tests
 make test
 ```
 

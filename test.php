@@ -89,7 +89,7 @@ try {
 	echo $e->getCode() . ': ' . $e->getMessage() . "\n";
 }
 try {
-	mcrawler_parse_url("http://testomato.com:80", 3);
+	mcrawler_parse_url("http://testomato.com:80", '');
 } catch (\McrawlerUrlException $e) {
 	echo $e->getCode() . ': ' . $e->getMessage() . "\n";
 }

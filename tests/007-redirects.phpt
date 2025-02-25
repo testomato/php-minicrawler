@@ -2,7 +2,7 @@
 Check response for multiple URLs
 --FILE--
 <?php
-$url = mcrawler_init_url("https://httpbin.org/redirect-to?url=https://www.testomato.com", "GET");
+$url = mcrawler_init_url("https://httpbin.org/redirect-to?url=https://www.testomato.com/", "GET");
 
 mcrawler_go([$url], mcrawler_init_settings(), function ($url) {
 

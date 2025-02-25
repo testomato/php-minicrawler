@@ -351,22 +351,17 @@ PHP_FUNCTION(mcrawler_init_url)
 	char *url_s, *method_s = NULL;
 	size_t url_len, method_len = 0;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s|s", &url_s, &url_len, &method_s, &method_len) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s|s!", &url_s, &url_len, &method_s, &method_len) == FAILURE) {
 		RETURN_FALSE;
 	}
 
 	url = ecalloc(1, sizeof(mcrawler_url));
-	if (!url) {
-		RETURN_FALSE;
-	}
 
 	mcrawler_init_url(url, url_s);
 	if (method_s) {
-      strncpy(url->method, method_s, sizeof(url->method) - 1);
-      url->method[sizeof(url->method) - 1] = '\0';
+		strncpy(url->method, method_s, sizeof(url->method) - 1);
 	} else {
-		strncpy(url->method, "GET", sizeof(url->method) - 1);
-		url->method[sizeof(url->method) - 1] = '\0';
+		strcpy(url->method, "GET");
 	}
 
 	php_minicrawler_register_url(url, return_value);

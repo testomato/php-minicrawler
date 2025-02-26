@@ -38,7 +38,7 @@ How to add other tags:
 docker buildx bake \
   --file docker-bake.hcl \
   --set php-minicrawler.tags.COMMIT="dr.brzy.cz/testomato/php-minicrawler:$(git rev-parse --short HEAD)" \
-  --set php-minicrawler.tags.COMMIT="dr.brzy.cz/testomato/php-minicrawler:v5.2.6" \
+  --set php-minicrawler.tags.COMMIT="dr.brzy.cz/testomato/php-minicrawler:v5.2.7" \
   --set php-minicrawler.tags.COMMIT="dr.brzy.cz/testomato/php-minicrawler:latest" \
   --push
 ```

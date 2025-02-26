@@ -110,10 +110,6 @@ After that you can run `php -m | grep minicrawler` to see if minicrawler is enab
 Then you can run tests:
 
 ```shell
-# disable sending emails to QA team
-export NO_INTERACTION=1;
-
-# then run tests
 make test
 ```
 

@@ -6,6 +6,8 @@ services:
   # docker compose run --rm php-minicrawler-dev /bin/bash
   php-minicrawler-dev:
     tty: true
+    environment:
+      - NO_INTERACTION=1
     build:
       context: .
       dockerfile: .docker/Dockerfile

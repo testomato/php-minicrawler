@@ -19,8 +19,8 @@ ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_init_settings, 0)
   ZEND_ARG_TYPE_INFO(0, delay, IS_LONG, 1) // Optional: `delay` (int)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_close_url, 0)
-	ZEND_ARG_INFO(0, url) // Required: `url` (resource)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_mcrawler_close_url, 0, 0, 1)
+    ZEND_ARG_TYPE_INFO(0, url, IS_RESOURCE, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_close_settings, 0)
@@ -81,10 +81,10 @@ ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_add_cookies, 0)
   ZEND_ARG_TYPE_INFO(0, cookies, IS_STRING, 0) // Required: `cookies` (string)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_go, 0)
-  ZEND_ARG_TYPE_INFO(0, urls, IS_ARRAY, 0) // Required: `urls` (array)
-  ZEND_ARG_INFO(0, settings) // Required: `settings` (resource)
-  ZEND_ARG_INFO(0, callback) // Required: `callback` (callable)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_mcrawler_go, 0, 0, 3)
+    ZEND_ARG_TYPE_INFO(0, urls, IS_ARRAY, 0)
+    ZEND_ARG_TYPE_INFO(0, settings, IS_RESOURCE, 0)
+    ZEND_ARG_TYPE_INFO(0, callback, IS_CALLABLE, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_reset, 0)
@@ -175,9 +175,9 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_version, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_parse_url, 0)
-	ZEND_ARG_TYPE_INFO(0, url, IS_STRING, 0) // Required: `url` (string)
-	ZEND_ARG_INFO(0, base_url)  // Optional: `base_url` (string)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_mcrawler_parse_url, 0, 0, 1)
+    ZEND_ARG_TYPE_INFO(0, input, IS_STRING, 0)
+    ZEND_ARG_TYPE_MASK(0, base_url, MAY_BE_STRING | MAY_BE_RESOURCE | MAY_BE_NULL, "string|resource|null")
 ZEND_END_ARG_INFO()
 
 

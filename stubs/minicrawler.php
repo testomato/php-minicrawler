@@ -346,10 +346,10 @@ function mcrawler_version(): string {}
  * Parse a URL and optionally resolve it against a base URL.
  *
  * @param string $url the URL to parse
- * @param string|null $base_url optional base URL to resolve against
+ * @param resource|string|null $base_url optional base URL to resolve against
  * @return array parsed URL components
  */
-function mcrawler_parse_url(string $url, ?string $base_url = null): array {}
+function mcrawler_parse_url(string $url, mixed $base_url = null): array {}
 
 /**
  * Class McrawlerException

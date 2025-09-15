@@ -455,7 +455,7 @@ PHP_FUNCTION(mcrawler_set_useragent)
 		RETURN_FALSE;
 	}
 
-	strncpy(url->customagent, ZSTR_VAL(useragent), ZSTR_LEN(useragent));
+	strncpy(url->customagent, ZSTR_VAL(useragent), sizeof(url->customagent) - 1);
 	RETURN_TRUE;
 }
 

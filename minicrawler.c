@@ -478,7 +478,7 @@ PHP_FUNCTION(mcrawler_set_headers)
 		php_error_docref(NULL, E_ERROR, "Custom HTTP headers are too long.");
 		RETURN_FALSE;
 	}
-	strncpy(url->customheader, ZSTR_VAL(headers), ZSTR_LEN(headers));
+	strncpy(url->customheader, ZSTR_VAL(headers), sizeof(url->customheader) - 1);
 	RETURN_TRUE;
 }
 

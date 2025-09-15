@@ -1015,7 +1015,7 @@ PHP_FUNCTION(mcrawler_get_cookies)
 	const char linefmt[] = "%s\t%d\t%s\t%d\t%ld\t%s\t%s\n";
 	size_t cookies_size = 0;
 	for (int i = 0; i < url->cookiecnt; i++) {
-		cookies_size += 
+		cookies_size +=
 			strlen(linefmt) +
 			strlen(url->cookies[i].domain) +
 			10 + 10 + 10 + // 3krát integer

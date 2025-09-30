@@ -2,28 +2,28 @@
 Try GET, POST, PUT and DELETE methods
 --FILE--
 <?php
-$resource = mcrawler_init_url('https://httpbin.org/get', "GET");
+$resource = mcrawler_init_url('https://httpbingo.org/get', "GET");
 if (mcrawler_get_method($resource) !== 'GET') {
 	user_error('Method is not GET');
 }
 
-$resource = mcrawler_init_url('https://httpbin.org/post', "POST");
+$resource = mcrawler_init_url('https://httpbingo.org/post', "POST");
 if (mcrawler_get_method($resource) !== 'POST') {
 	user_error('Method is not POST');
 }
 
-$resource = mcrawler_init_url('https://httpbin.org/put', "PUT");
+$resource = mcrawler_init_url('https://httpbingo.org/put', "PUT");
 if (mcrawler_get_method($resource) !== 'PUT') {
 	user_error('Method is not PUT');
 }
 
-$resource = mcrawler_init_url('https://httpbin.org/delete', "DELETE");
+$resource = mcrawler_init_url('https://httpbingo.org/delete', "DELETE");
 if (mcrawler_get_method($resource) !== 'DELETE') {
 	user_error('Method is not DELETE');
 }
 
 $settings = mcrawler_init_settings();
-$resource = mcrawler_init_url('https://httpbin.org/get'); // default GET
+$resource = mcrawler_init_url('https://httpbingo.org/get'); // default GET
 mcrawler_go([$resource], $settings, function ($url) {
 
 	if (mcrawler_get_method($url) !== 'GET') {
@@ -35,7 +35,7 @@ mcrawler_go([$resource], $settings, function ($url) {
 		user_error('Invalid JSON response');
 	}
 
-	if ($json->url !== 'https://httpbin.org/get') {
+	if ($json->url !== 'https://httpbingo.org/get') {
 		user_error('Incorrect or missing URL');
 	}
 

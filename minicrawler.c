@@ -1,3 +1,4 @@
+#include <stdio.h>
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -445,6 +446,7 @@ PHP_FUNCTION(mcrawler_set_useragent)
 	mcrawler_url  *url;
 	zval          *zurl;
 	zend_string   *useragent;
+	size_t        len;
 
 	ZEND_PARSE_PARAMETERS_START(2, 2)
 		Z_PARAM_RESOURCE(zurl)
@@ -452,11 +454,24 @@ PHP_FUNCTION(mcrawler_set_useragent)
 	ZEND_PARSE_PARAMETERS_END();
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
-	strncpy(url->customagent, ZSTR_VAL(useragent), sizeof(url->customagent) - 1);
-	RETURN_TRUE;
+	len = ZSTR_LEN(useragent);
+
+	if (len > sizeof(url->customagent)-1) {
+		php_error_docref(NULL, E_ERROR, "User agent is too long.");
+		RETURN_BOOL(false);
+	}
+
+	if (len >= sizeof(url->customagent)) {
+		len = sizeof(url->customagent) - 1;
+	}
+
+	memcpy(url->customagent, ZSTR_VAL(useragent), len);
+	url->customagent[len] = '\0';
+
+	RETURN_BOOL(true);
 }
 
 PHP_FUNCTION(mcrawler_set_headers)
@@ -464,6 +479,7 @@ PHP_FUNCTION(mcrawler_set_headers)
 	mcrawler_url  *url;
 	zval          *zurl;
 	zend_string   *headers;
+	size_t        len;
 
 	ZEND_PARSE_PARAMETERS_START(2, 2)
 		Z_PARAM_RESOURCE(zurl)
@@ -471,15 +487,20 @@ PHP_FUNCTION(mcrawler_set_headers)
 	ZEND_PARSE_PARAMETERS_END();
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
-	if (ZSTR_LEN(headers) > sizeof(url->customheader)-1) {
+	len = ZSTR_LEN(headers);
+
+	if (len > sizeof(url->customheader)-1) {
 		php_error_docref(NULL, E_ERROR, "Custom HTTP headers are too long.");
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
-	strncpy(url->customheader, ZSTR_VAL(headers), sizeof(url->customheader) - 1);
-	RETURN_TRUE;
+
+	memcpy(url->customheader, ZSTR_VAL(headers), len);
+	url->customheader[len] = '\0';
+
+	RETURN_BOOL(true);
 }
 
 PHP_FUNCTION(mcrawler_add_headers)

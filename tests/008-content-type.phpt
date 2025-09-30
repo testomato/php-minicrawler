@@ -2,7 +2,7 @@
 Response size check
 --FILE--
 <?php
-$png = mcrawler_init_url("https://httpbin.org/image/png", "GET");
+$png = mcrawler_init_url("https://httpbingo.org/image/png", "GET");
 
 mcrawler_go([$png], mcrawler_init_settings(), function ($url) {
 

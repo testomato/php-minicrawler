@@ -2,8 +2,8 @@
 Check response for multiple URLs
 --FILE--
 <?php
-$url1 = mcrawler_init_url("https://httpbin.org", "GET");
-$url2 = mcrawler_init_url("https://httpbin.org/get", "GET");
+$url1 = mcrawler_init_url("https://httpbingo.org", "GET");
+$url2 = mcrawler_init_url("https://httpbingo.org/get", "GET");
 
 mcrawler_go([$url1, $url2], mcrawler_init_settings(), function ($url) {
 

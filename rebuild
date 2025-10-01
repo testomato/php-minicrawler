@@ -1,14 +1,21 @@
 #!/bin/bash
 
+echo -e "\e[32mBuilding minicrawler...\e[0m"
 phpize
+autoconf
 ./configure
+
+echo -e "\e[32mBuilding minicrawler...\e[0m"
 make INSTALL_ROOT="/var/lib/php-minicrawler"
 
 # install minicrawler.so
+echo -e "\e[32mInstalling minicrawler.so...\e[0m"
 install -v modules/*.so $(php-config --extension-dir)
 
 # install minicrawler.ini
+echo -e "\e[32mInstalling minicrawler.ini...\e[0m"
 install -v /minicrawler.ini /etc/php/8.4/mods-available
 
 # enable minicrawler
+echo -e "\e[32mEnabling minicrawler...\e[0m"
 phpenmod minicrawler

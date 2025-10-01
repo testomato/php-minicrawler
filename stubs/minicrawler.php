@@ -86,6 +86,14 @@ function mcrawler_get_timeout($settings): int {}
 function mcrawler_get_delay($settings): int {}
 
 /**
+ * Retrieves the user agent for the specified URL.
+ *
+ * @param resource $url the URL resource
+ * @return string|null the user agent string or null if not set
+ */
+function mcrawler_get_useragent($url): ?string {}
+
+/**
  * Sets the user agent for the specified URL.
  *
  * @param resource $url the URL resource

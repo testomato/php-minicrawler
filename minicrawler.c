@@ -358,7 +358,7 @@ PHP_FUNCTION(mcrawler_init_url)
 	size_t url_len, method_len = 0;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s|s!", &url_s, &url_len, &method_s, &method_len) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	url = ecalloc(1, sizeof(mcrawler_url));
@@ -382,7 +382,7 @@ PHP_FUNCTION(mcrawler_close_url)
 	ZEND_PARSE_PARAMETERS_END();
 
 	zend_list_close(Z_RES_P(zurl));
-	RETURN_TRUE;
+	RETURN_BOOL(true);
 }
 
 PHP_FUNCTION(mcrawler_init_settings)
@@ -391,7 +391,7 @@ PHP_FUNCTION(mcrawler_init_settings)
 	long timeout = 5, delay = 100;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "|ll", &timeout, &delay) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	settings = emalloc(sizeof(mcrawler_settings));
@@ -411,7 +411,7 @@ PHP_FUNCTION(mcrawler_close_settings)
 	ZEND_PARSE_PARAMETERS_END();
 
 	zend_list_close(Z_RES_P(zsetting));
-	RETURN_TRUE;
+	RETURN_BOOL(true);
 }
 
 PHP_FUNCTION(mcrawler_get_timeout)
@@ -420,11 +420,11 @@ PHP_FUNCTION(mcrawler_get_timeout)
 	zval *zsettings;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zsettings) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if ((settings = (mcrawler_settings*)zend_fetch_resource(Z_RES_P(zsettings), MCRAWLER_SETTINGS_RES_NAME, le_mcrawler_settings)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	RETURN_LONG(settings->timeout);
@@ -436,11 +436,11 @@ PHP_FUNCTION(mcrawler_get_delay)
 	zval *zsettings;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zsettings) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if ((settings = (mcrawler_settings*)zend_fetch_resource(Z_RES_P(zsettings), MCRAWLER_SETTINGS_RES_NAME, le_mcrawler_settings)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	RETURN_LONG(settings->delay);
@@ -452,11 +452,11 @@ PHP_FUNCTION(mcrawler_get_useragent)
 	zval *zurl;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if (url->customagent[0] != '\0') {
@@ -540,16 +540,16 @@ PHP_FUNCTION(mcrawler_add_headers)
 	ZEND_PARSE_PARAMETERS_END();
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	size_t offset = strlen(url->customheader);
 	if (offset + ZSTR_LEN(headers) > sizeof(url->customheader)-1) {
 		php_error_docref(NULL, E_ERROR, "Custom HTTP headers are too long.");
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 	strncpy(url->customheader + offset, ZSTR_VAL(headers), ZSTR_LEN(headers));
-	RETURN_TRUE;
+	RETURN_BOOL(true);
 }
 
 PHP_FUNCTION(mcrawler_set_credentials)
@@ -565,12 +565,12 @@ PHP_FUNCTION(mcrawler_set_credentials)
 	ZEND_PARSE_PARAMETERS_END();
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	strncpy(url->username, ZSTR_VAL(username), sizeof(url->username) - 1);
 	strncpy(url->password, ZSTR_VAL(password), sizeof(url->password) - 1);
-	RETURN_TRUE;
+	RETURN_BOOL(true);
 }
 
 PHP_FUNCTION(mcrawler_set_options)
@@ -585,11 +585,11 @@ PHP_FUNCTION(mcrawler_set_options)
 	ZEND_PARSE_PARAMETERS_END();
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	url->options = options;
-	RETURN_TRUE;
+	RETURN_BOOL(true);
 }
 
 PHP_FUNCTION(mcrawler_set_option)
@@ -604,11 +604,11 @@ PHP_FUNCTION(mcrawler_set_option)
 	ZEND_PARSE_PARAMETERS_END();
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	url->options |= option;
-	RETURN_TRUE;
+	RETURN_BOOL(true);
 }
 
 PHP_FUNCTION(mcrawler_set_postdata)
@@ -623,14 +623,14 @@ PHP_FUNCTION(mcrawler_set_postdata)
 	ZEND_PARSE_PARAMETERS_END();
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if (url->post) free(url->post);
 	url->post = malloc(ZSTR_LEN(postdata));
 	url->postlen = ZSTR_LEN(postdata);
 	memcpy(url->post, ZSTR_VAL(postdata), ZSTR_LEN(postdata));
-	RETURN_TRUE;
+	RETURN_BOOL(true);
 }
 
 static void scan_cookie(char **str, mcrawler_cookie *cookie) {
@@ -655,7 +655,7 @@ PHP_FUNCTION(mcrawler_set_cookies)
 	ZEND_PARSE_PARAMETERS_END();
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	char *p = ZSTR_VAL(arg);
@@ -672,7 +672,7 @@ PHP_FUNCTION(mcrawler_set_cookies)
 	}
 	url->cookiecnt = i;
 
-	RETURN_TRUE;
+	RETURN_BOOL(true);
 }
 
 PHP_FUNCTION(mcrawler_add_cookies)
@@ -687,7 +687,7 @@ PHP_FUNCTION(mcrawler_add_cookies)
 	ZEND_PARSE_PARAMETERS_END();
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	char *p = ZSTR_VAL(arg);
@@ -698,7 +698,7 @@ PHP_FUNCTION(mcrawler_add_cookies)
 	}
 	url->cookiecnt = i;
 
-	RETURN_TRUE;
+	RETURN_BOOL(true);
 }
 
 struct fcall {
@@ -736,7 +736,7 @@ PHP_FUNCTION(mcrawler_go)
 	fc.info_cache = empty_fcall_info_cache;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "ar|f", &zurls, &zsettings, &fc.info, &fc.info_cache) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	HashTable *arr_hash = Z_ARRVAL_P(zurls);
@@ -748,7 +748,7 @@ PHP_FUNCTION(mcrawler_go)
 
 	for(zend_hash_internal_pointer_reset_ex(arr_hash, &pointer); (zurl = zend_hash_get_current_data_ex(arr_hash, &pointer)) != NULL; zend_hash_move_forward_ex(arr_hash, &pointer), i++) {
 		if ((urls[i] = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-			RETURN_FALSE;
+			RETURN_BOOL(false);
 		}
 
 		if (zend_hash_get_current_key_ex(arr_hash, &key, &ind, &pointer) == HASH_KEY_IS_LONG) {
@@ -760,12 +760,12 @@ PHP_FUNCTION(mcrawler_go)
 	urls[i] = NULL;
 
 	if ((settings = (mcrawler_settings*)zend_fetch_resource(Z_RES_P(zsettings), MCRAWLER_SETTINGS_RES_NAME, le_mcrawler_settings)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	mcrawler_go(urls, settings, callback, (void *)&fc);
 
-	RETURN_TRUE;
+	RETURN_BOOL(true);
 }
 
 PHP_FUNCTION(mcrawler_reset)
@@ -774,11 +774,11 @@ PHP_FUNCTION(mcrawler_reset)
 	zval *zurl;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	mcrawler_reset_url(url);
@@ -790,11 +790,11 @@ PHP_FUNCTION(mcrawler_get_index)
 	zval *zurl;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	RETURN_LONG(url->index);
@@ -806,11 +806,11 @@ PHP_FUNCTION(mcrawler_get_state)
 	zval *zurl;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	RETURN_LONG(url->last_state);
@@ -822,11 +822,11 @@ PHP_FUNCTION(mcrawler_get_status)
 	zval *zurl;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	RETURN_LONG(url->status);
@@ -838,11 +838,11 @@ PHP_FUNCTION(mcrawler_get_url)
 	zval *zurl;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	RETURN_STRING(url->rawurl);
@@ -854,11 +854,11 @@ PHP_FUNCTION(mcrawler_get_method)
 	zval *zurl;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	RETURN_STRING(url->method);
@@ -870,11 +870,11 @@ PHP_FUNCTION(mcrawler_get_request)
 	zval *zurl;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if (url->request) {
@@ -890,11 +890,11 @@ PHP_FUNCTION(mcrawler_get_redirected_to)
 	zval *zurl;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if (url->redirectedto) {
@@ -910,11 +910,11 @@ PHP_FUNCTION(mcrawler_get_redirect_info)
 	zval *zurl;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	int len = 0, total;
@@ -955,11 +955,11 @@ PHP_FUNCTION(mcrawler_get_header)
 	zval *zurl;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	unsigned char *header;
@@ -976,11 +976,11 @@ PHP_FUNCTION(mcrawler_get_body)
 	zval *zurl;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	unsigned char *body;
@@ -997,11 +997,11 @@ PHP_FUNCTION(mcrawler_get_response_size)
 	zval *zurl;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	unsigned char *header, *body;
@@ -1019,11 +1019,11 @@ PHP_FUNCTION(mcrawler_get_options)
 	zval *zurl;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	RETURN_LONG(url->options);
@@ -1035,11 +1035,11 @@ PHP_FUNCTION(mcrawler_get_timing)
 	zval *zurl;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	timing_to_zval(&url->timing, url->last_state, return_value);
@@ -1051,11 +1051,11 @@ PHP_FUNCTION(mcrawler_get_cookies)
 	zval *zurl;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	const char linefmt[] = "%s\t%d\t%s\t%d\t%ld\t%s\t%s\n";
@@ -1091,11 +1091,11 @@ PHP_FUNCTION(mcrawler_get_content_type)
 	zval *zurl;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if (url->contenttype) {
@@ -1111,11 +1111,11 @@ PHP_FUNCTION(mcrawler_get_charset)
 	zval *zurl;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if (url->contenttype) {
@@ -1131,11 +1131,11 @@ PHP_FUNCTION(mcrawler_get_www_authenticate)
 	zval *zurl;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if (url->wwwauthenticate) {
@@ -1151,11 +1151,11 @@ PHP_FUNCTION(mcrawler_get_error_msg)
 	zval *zurl;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	RETURN_STRING(url->error_msg);
@@ -1167,7 +1167,7 @@ PHP_FUNCTION(mcrawler_serialize)
 	zval *zurls, *zsettings, *zurl;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "ar", &zurls, &zsettings) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	HashTable *arr_hash = Z_ARRVAL_P(zurls);
@@ -1179,7 +1179,7 @@ PHP_FUNCTION(mcrawler_serialize)
 
 	for(zend_hash_internal_pointer_reset_ex(arr_hash, &pointer); (zurl = zend_hash_get_current_data_ex(arr_hash, &pointer)) != NULL; zend_hash_move_forward_ex(arr_hash, &pointer), i++) {
 		if ((urls[i] = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
-			RETURN_FALSE;
+			RETURN_BOOL(false);
 		}
 
 		if (zend_hash_get_current_key_ex(arr_hash, &key, &ind, &pointer) == HASH_KEY_IS_LONG) {
@@ -1191,7 +1191,7 @@ PHP_FUNCTION(mcrawler_serialize)
 	urls[i] = NULL;
 
 	if ((settings = (mcrawler_settings*)zend_fetch_resource(Z_RES_P(zsettings), MCRAWLER_SETTINGS_RES_NAME, le_mcrawler_settings)) == NULL) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	void *buf;
@@ -1215,7 +1215,7 @@ PHP_FUNCTION(mcrawler_unserialize)
 	int buf_sz;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &buf, &buf_sz) == FAILURE) {
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	mcrawler_urls_unserialize(&urls, &settings, buf, buf_sz, emalloc_func);
@@ -1329,18 +1329,18 @@ PHP_FUNCTION(mcrawler_parse_url)
 			case IS_STRING:
 				if (mcrawler_url_parse(&base_url, Z_STRVAL_P(zbase_url), NULL) == MCRAWLER_URL_FAILURE) {
 					zend_throw_exception_ex(php_mcrawler_url_exception_ce, 0, "Invalid base URL");
-					RETURN_FALSE;
+					RETURN_BOOL(false);
 				}
 				p_base_url = &base_url;
 				break;
 			case IS_RESOURCE:
 				if ((p_base_url = (mcrawler_url_url*)zend_fetch_resource(Z_RES_P(zbase_url), MCRAWLER_URL_URL_RES_NAME, le_mcrawler_url_url)) == NULL) {
-					RETURN_FALSE;
+					RETURN_BOOL(false);
 				}
 				break;
 			default:
 				php_error_docref(NULL, E_ERROR, "Invalid type for base URL, only string or resource allowed.");
-				RETURN_FALSE;
+				RETURN_BOOL(false);
 		}
 	} else {
 		p_base_url = NULL;
@@ -1352,7 +1352,7 @@ PHP_FUNCTION(mcrawler_parse_url)
 	if (mcrawler_url_parse2(url, ZSTR_VAL(input), p_base_url, &state) == MCRAWLER_URL_FAILURE) {
 		efree(url);
 		zend_throw_exception_ex(php_mcrawler_url_exception_ce, state, "Invalid URL");
-		RETURN_FALSE;
+		RETURN_BOOL(false);
 	}
 
 	char *tmp;

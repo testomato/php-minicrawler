@@ -36,6 +36,10 @@ ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_delay, 0)
 	ZEND_ARG_INFO(0, settings) // Required: `settings` (resource)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_get_useragent, 0)
+	ZEND_ARG_INFO(0, url) // Required: `url` (resource)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_INFO(arginfo_mcrawler_set_useragent, 0)
   ZEND_ARG_INFO(0, url) // Required: `url` (resource)
   ZEND_ARG_TYPE_INFO(0, useragent, IS_STRING, 0) // Required: `useragent` (string)
@@ -189,6 +193,7 @@ static zend_function_entry minicrawler_functions[] = {
     PHP_FE(mcrawler_close_settings, arginfo_mcrawler_close_settings)
     PHP_FE(mcrawler_get_timeout, arginfo_mcrawler_get_timeout)
     PHP_FE(mcrawler_get_delay, arginfo_mcrawler_get_delay)
+    PHP_FE(mcrawler_get_useragent, arginfo_mcrawler_get_useragent)
     PHP_FE(mcrawler_set_useragent, arginfo_mcrawler_set_useragent)
     PHP_FE(mcrawler_set_headers, arginfo_mcrawler_set_headers)
     PHP_FE(mcrawler_add_headers, arginfo_mcrawler_add_headers)
@@ -439,6 +444,26 @@ PHP_FUNCTION(mcrawler_get_delay)
 	}
 
 	RETURN_LONG(settings->delay);
+}
+
+PHP_FUNCTION(mcrawler_get_useragent)
+{
+	mcrawler_url *url;
+	zval *zurl;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &zurl) == FAILURE) {
+		RETURN_FALSE;
+	}
+
+	if ((url = (mcrawler_url*)zend_fetch_resource(Z_RES_P(zurl), MCRAWLER_URL_RES_NAME, le_mcrawler_url)) == NULL) {
+		RETURN_FALSE;
+	}
+
+	if (url->customagent[0] != '\0') {
+		RETURN_STRING(url->customagent);
+	} else {
+		RETURN_NULL();
+	}
 }
 
 PHP_FUNCTION(mcrawler_set_useragent)

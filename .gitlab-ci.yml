@@ -6,12 +6,10 @@ Build php-minicrawler container:
   stage: Docker
   before_script:
     - echo $CI_REGISTRY_PASSWORD | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
-    - docker buildx rm --all-inactive --force
-    - docker buildx ls | grep multi-builder || docker buildx create --use --bootstrap --name multi-builder
+    - docker buildx ls | grep ${CI_PROJECT_ROOT_NAMESPACE}-builder || docker buildx create --use --bootstrap --name ${CI_PROJECT_ROOT_NAMESPACE}-builder
+    - docker buildx use ${CI_PROJECT_ROOT_NAMESPACE}-builder
   script:
     - docker buildx bake --file docker-bake.hcl php-minicrawler --push
-  after_script:
-    - docker buildx prune --all --keep-storage=10GB --force
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: always

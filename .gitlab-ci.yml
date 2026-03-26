@@ -9,7 +9,6 @@ Build php-minicrawler container:
     - docker buildx rm --all-inactive --force
     - docker buildx ls | grep multi-builder || docker buildx create --use --bootstrap --name multi-builder
   script:
-    - docker buildx bake --file docker-bake.hcl php-minicrawler --print
     - docker buildx bake --file docker-bake.hcl php-minicrawler --push
   after_script:
     - docker buildx prune --all --keep-storage=10GB --force

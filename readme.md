@@ -4,7 +4,39 @@ PHP Minicrawler executes HTTP requests while handling cookies, network connectio
 By default, it follows redirect locations and returns a full response, final URL, parsed cookies and more.
 It is designed to handle *many* request in parallel in a *single thread* by opening a socket for each connection.
 
-## Build
+## Usage
+
+### 1. Login to GitLab Container Registry
+
+Use [group deploy token](https://gitlab.int.wikidi.net/groups/testomato/-/settings/repository#js-deploy-tokens):
+
+```shell
+docker login gitlab.int.wikidi.net:5050 -u testomato -p "gldt-Y4KWxV-8bx5Mh4NZWVKp"
+```
+
+### 2. Pull image
+
+```shell
+docker pull gitlab.int.wikidi.net:5050/testomato/php-minicrawler:latest
+```
+
+### 3. Run
+
+```shell
+docker run -it --rm gitlab.int.wikidi.net:5050/testomato/php-minicrawler:latest /bin/bash
+```
+
+### Install minicrawler into your image
+
+```dockerfile
+COPY --from=gitlab.int.wikidi.net:5050/testomato/php-minicrawler:latest /var/lib/php-minicrawler/usr /usr
+COPY --from=gitlab.int.wikidi.net:5050/testomato/php-minicrawler:latest /var/lib/php-minicrawler/etc /etc
+RUN phpenmod minicrawler
+```
+
+Command `phpenmod` require `php-common` package to be installed.
+
+## Build from source
 
 Tested platforms: Debian Linux, OS X
 
@@ -43,71 +75,12 @@ docker buildx bake \
   --push
 ```
 
-## Usage
-
-### 1. Login to GitLab Container Registry
-
-Use [group deploy token](https://gitlab.int.wikidi.net/groups/testomato/-/settings/repository#js-deploy-tokens):
-
-```shell
-docker login gitlab.int.wikidi.net:5050 -u testomato -p "gldt-Y4KWxV-8bx5Mh4NZWVKp"
-```
-
-### 2. Pull image
-
-```shell
-docker pull gitlab.int.wikidi.net:5050/testomato/php-minicrawler:latest
-```
-
-### 3. Run
-
-```shell
-docker run -it --rm gitlab.int.wikidi.net:5050/testomato/php-minicrawler:latest /bin/bash
-```
-
-## Try PHP minicrawler
-
-Pull latest image and run it:
-
-```shell
-docker pull gitlab.int.wikidi.net:5050/testomato/php-minicrawler:latest
-docker run -it --rm gitlab.int.wikidi.net:5050/testomato/php-minicrawler:latest /bin/bash
-```
-
-then you can try to install minicrawler locally inside container:
-
-```shell
-# install php 8.4
-# check https://packages.sury.org/php/README.txt for more info
-apt-get update
-apt-get -y install lsb-release ca-certificates curl
-curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
-dpkg -i /tmp/debsuryorg-archive-keyring.deb
-sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
-apt-get update
-apt install -qy php8.4-cli
-
-# install minicrawler
-cp -r /var/lib/php-minicrawler/usr /
-cp -r /var/lib/php-minicrawler/etc /
-phpenmod minicrawler
-
-```
-
-then run interactive php shell:
-
-```shell
-php -a
-```
-
-and try 
-
 ## Test & Development
 
 ```shell
 docker compose build php-minicrawler-dev
 docker compose run --rm php-minicrawler-dev /bin/bash
-````
+```
 
 Inside container run:
 
@@ -134,16 +107,6 @@ Then you can run tests:
 ```shell
 make test
 ```
-
-## Install minicrawler into your image
-
-```dockerfile
-COPY --from=gitlab.int.wikidi.net:5050/testomato/php-minicrawler:latest /var/lib/php-minicrawler/usr /usr
-COPY --from=gitlab.int.wikidi.net:5050/testomato/php-minicrawler:latest /var/lib/php-minicrawler/etc /etc
-RUN phpenmod minicrawler
-```
-
-Command `phpenmod` require `php-common` package to be installed.
 
 ## Links
 

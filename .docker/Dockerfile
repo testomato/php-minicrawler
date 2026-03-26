@@ -58,8 +58,8 @@ RUN sed -i 's/mozilla\/DST_Root_CA_X3.crt/!mozilla\/DST_Root_CA_X3.crt/g' /etc/c
 	 && cp -v ca-bundle.crt /var/lib/certs/ca-bundle.crt
 
 # Install minicrawler and minicrawler libs
-COPY --from=dr.brzy.cz/testomato/minicrawler:latest /var/lib/minicrawler/usr /usr
-COPY --from=dr.brzy.cz/testomato/minicrawler:latest /var/lib/minicrawler /var/lib/minicrawler
+COPY --from=gitlab.int.wikidi.net:5050/testomato/minicrawler:latest /var/lib/minicrawler/usr /usr
+COPY --from=gitlab.int.wikidi.net:5050/testomato/minicrawler:latest /var/lib/minicrawler /var/lib/minicrawler
 
 ENV LC_ALL=en_US.UTF-8
 

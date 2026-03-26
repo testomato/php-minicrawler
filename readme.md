@@ -37,10 +37,32 @@ How to add other tags:
 ```shell
 docker buildx bake \
   --file docker-bake.hcl \
-  --set php-minicrawler.tags.COMMIT="dr.brzy.cz/testomato/php-minicrawler:$(git rev-parse --short HEAD)" \
-  --set php-minicrawler.tags.COMMIT="dr.brzy.cz/testomato/php-minicrawler:v5.2.7" \
-  --set php-minicrawler.tags.COMMIT="dr.brzy.cz/testomato/php-minicrawler:latest" \
+  --set php-minicrawler.tags.COMMIT="gitlab.int.wikidi.net:5050/testomato/php-minicrawler:$(git rev-parse --short HEAD)" \
+  --set php-minicrawler.tags.COMMIT="gitlab.int.wikidi.net:5050/testomato/php-minicrawler:v5.2.7" \
+  --set php-minicrawler.tags.COMMIT="gitlab.int.wikidi.net:5050/testomato/php-minicrawler:latest" \
   --push
+```
+
+## Usage
+
+### 1. Login to GitLab Container Registry
+
+Use [group deploy token](https://gitlab.int.wikidi.net/groups/testomato/-/settings/repository#js-deploy-tokens):
+
+```shell
+docker login gitlab.int.wikidi.net:5050 -u testomato -p "gldt-Y4KWxV-8bx5Mh4NZWVKp"
+```
+
+### 2. Pull image
+
+```shell
+docker pull gitlab.int.wikidi.net:5050/testomato/php-minicrawler:latest
+```
+
+### 3. Run
+
+```shell
+docker run -it --rm gitlab.int.wikidi.net:5050/testomato/php-minicrawler:latest /bin/bash
 ```
 
 ## Try PHP minicrawler
@@ -48,8 +70,8 @@ docker buildx bake \
 Pull latest image and run it:
 
 ```shell
-docker pull dr.brzy.cz/testomato/php-minicrawler:latest
-docker run -it --rm dr.brzy.cz/testomato/php-minicrawler:latest /bin/bash
+docker pull gitlab.int.wikidi.net:5050/testomato/php-minicrawler:latest
+docker run -it --rm gitlab.int.wikidi.net:5050/testomato/php-minicrawler:latest /bin/bash
 ```
 
 then you can try to install minicrawler locally inside container:
@@ -116,8 +138,8 @@ make test
 ## Install minicrawler into your image
 
 ```dockerfile
-COPY --from=dr.brzy.cz/testomato/php-minicrawler:latest /var/lib/php-minicrawler/usr /usr
-COPY --from=dr.brzy.cz/testomato/php-minicrawler:latest /var/lib/php-minicrawler/etc /etc
+COPY --from=gitlab.int.wikidi.net:5050/testomato/php-minicrawler:latest /var/lib/php-minicrawler/usr /usr
+COPY --from=gitlab.int.wikidi.net:5050/testomato/php-minicrawler:latest /var/lib/php-minicrawler/etc /etc
 RUN phpenmod minicrawler
 ```
 

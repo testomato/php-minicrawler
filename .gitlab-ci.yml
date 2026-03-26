@@ -5,6 +5,7 @@ Build php-minicrawler container:
   tags: [ shell ]
   stage: Docker
   before_script:
+    - echo $CI_REGISTRY_PASSWORD | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
     - docker buildx rm --all-inactive --force
     - docker buildx ls | grep multi-builder || docker buildx create --use --bootstrap --name multi-builder
   script:

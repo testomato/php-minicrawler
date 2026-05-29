@@ -14,7 +14,7 @@ install -v modules/*.so $(php-config --extension-dir)
 
 # install minicrawler.ini
 echo -e "\e[32mInstalling minicrawler.ini...\e[0m"
-install -v /minicrawler.ini /etc/php/8.4/mods-available
+install -v /minicrawler.ini /etc/php/8.5/mods-available
 
 # enable minicrawler
 echo -e "\e[32mEnabling minicrawler...\e[0m"

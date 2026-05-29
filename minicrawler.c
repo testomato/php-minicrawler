@@ -335,8 +335,8 @@ PHP_MINIT_FUNCTION(minicrawler)
 	INIT_CLASS_ENTRY(ce, "McrawlerException", NULL);
 	INIT_CLASS_ENTRY(ce_url, "McrawlerUrlException", NULL);
 
-	php_mcrawler_exception_ce = zend_register_internal_class_ex(&ce, zend_exception_get_default());
-   php_mcrawler_url_exception_ce = zend_register_internal_class_ex(&ce_url, zend_exception_get_default());
+	php_mcrawler_exception_ce = zend_register_internal_class_ex(&ce, zend_ce_exception);
+   php_mcrawler_url_exception_ce = zend_register_internal_class_ex(&ce_url, zend_ce_exception);
 
 	return SUCCESS;
 }

@@ -101,7 +101,7 @@ make INSTALL_ROOT="/var/lib/php-minicrawler"
 install -v modules/*.so "$(php-config --extension-dir)"
 
 # install minicrawler.ini
-install -v /minicrawler.ini /etc/php/8.4/mods-available
+install -v /minicrawler.ini /etc/php/8.5/mods-available
 
 # enable minicrawler
 phpenmod minicrawler

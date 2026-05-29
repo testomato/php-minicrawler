@@ -46,7 +46,7 @@ RUN apt-get update \
     && dpkg -i /tmp/debsuryorg-archive-keyring.deb \
     && sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list' \
     && apt-get update \
-    && apt install -qy php8.4-dev
+    && apt install -qy php8.5-dev
 
 # ca-certificates update
 RUN sed -i 's/mozilla\/DST_Root_CA_X3.crt/!mozilla\/DST_Root_CA_X3.crt/g' /etc/ca-certificates.conf  \
@@ -74,8 +74,8 @@ RUN phpize || exit 40 \
 	&& make INSTALL_ROOT="/var/lib/php-minicrawler" || exit 42 \
 	&& mkdir -p /var/lib/php-minicrawler$(php-config --extension-dir) \
 	&& install -v modules/*.so /var/lib/php-minicrawler$(php-config --extension-dir) || exit 43 \
-	&& mkdir -p /var/lib/php-minicrawler/etc/php/8.4/mods-available \
-	&& install -v /minicrawler.ini /var/lib/php-minicrawler/etc/php/8.4/mods-available || exit 44
+	&& mkdir -p /var/lib/php-minicrawler/etc/php/8.5/mods-available \
+	&& install -v /minicrawler.ini /var/lib/php-minicrawler/etc/php/8.5/mods-available || exit 44
 
 # Final image with PHP minicrawler extension
 FROM debian:bookworm-slim AS php-minicrawler

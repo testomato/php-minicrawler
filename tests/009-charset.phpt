@@ -6,7 +6,7 @@ $web = mcrawler_init_url("https://testomato.com/", "GET");
 
 mcrawler_go([$web], mcrawler_init_settings(), function ($url) {
 
-	if (mcrawler_get_charset($url) !== 'UTF-8') {
+	if (strcasecmp(mcrawler_get_charset($url), 'UTF-8') !== 0) {
 		user_error('Charset is not UTF-8 but ' . mcrawler_get_charset($url));
 	}
 

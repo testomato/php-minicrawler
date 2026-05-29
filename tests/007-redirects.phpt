@@ -2,11 +2,11 @@
 Check response for multiple URLs
 --FILE--
 <?php
-$url = mcrawler_init_url("https://httpbin.org/redirect-to?url=https://www.testomato.com/", "GET");
+$url = mcrawler_init_url("http://www.testomato.com/", "GET");
 
 mcrawler_go([$url], mcrawler_init_settings(), function ($url) {
 
-	if (mcrawler_get_redirected_to($url) !== 'https://www.testomato.com/') {
+	if (mcrawler_get_redirected_to($url) !== 'https://testomato.com/') {
 		user_error('Invalid redirect url:' . mcrawler_get_redirected_to($url));
 	}
 
@@ -14,11 +14,11 @@ mcrawler_go([$url], mcrawler_init_settings(), function ($url) {
 
 	$info = (object) current(mcrawler_get_redirect_info($url));
 
-	if ($info->url !== 'https://www.testomato.com/') {
+	if ($info->url !== 'https://testomato.com/') {
 		user_error('Invalid redirect url:' . $info->url);
 	}
 
-	if ($info->status !== 302) {
+	if ($info->status !== 301) {
 		user_error('Invalid http code:' . $info->status);
 	}
 

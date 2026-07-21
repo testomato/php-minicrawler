@@ -17,7 +17,7 @@ target "php-minicrawler" {
   pull       = true
   tags       = [
     "${CI_REGISTRY_IMAGE}:latest",
-    "${CI_REGISTRY_IMAGE}:v5.2.8"
+    "${CI_REGISTRY_IMAGE}:v5.3.0"
   ]
 }
 
